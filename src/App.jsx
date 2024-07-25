@@ -14,7 +14,7 @@ function App() {
   },[dispatch])
   return (
     <Router>
-      <div className="App">
+      <div className="App overflow-x-hidden">
         <Routes>
           <Route path='/' element={<Profile/>}/>
         </Routes>
