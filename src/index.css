@@ -1,9 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda+SC:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Caveat:wght@400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poiret+One&display=swap'); */
 
 *{
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
+}
+
+.btn-primary{
+  @apply w-fit bg-primary text-tertiary rounded-md px-4 py-1 border-2 border-primary hover:bg-tertiary hover:text-primary
 }

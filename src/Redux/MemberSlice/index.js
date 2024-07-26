@@ -7,8 +7,14 @@ export const getMembers = createAsyncThunk('gets/getMembers',async () =>{
     })
 })
 
+export const getMemberById = createAsyncThunk('gets/getMemberById',async (id) =>{
+    return axios.get(`https://localhost:7073/api/Member/Profile/${id}`).then((res)=>{
+        return res.data;
+    })
+})
+
 export const getMyProfile = createAsyncThunk('gets/getMyProfile',async () =>{
-    return axios.get('https://localhost:7073/api/Member/Profile?MemberId=1').then((res)=>{
+    return axios.get('https://localhost:7073/api/Member/Profile/1').then((res)=>{
         return res.data;
     })
 })
@@ -18,6 +24,7 @@ const MemberSlice = createSlice({
     initialState:{
         allMembers:[],
         Profile:{},
+        Selected:{},
         loading:[]
     },
     reducers:{
@@ -32,9 +39,10 @@ const MemberSlice = createSlice({
         builder.addCase(getMyProfile.fulfilled,(state,action)=>{
             state.Profile = action.payload;
         })
+        builder.addCase(getMemberById.fulfilled,(state,action)=>{
+            state.Selected = action.payload;
+        })
       },
 })
-
-// export const {updateFormField,searchRed,filterStatus} = ProductSlice.actions;
 
 export default MemberSlice.reducer

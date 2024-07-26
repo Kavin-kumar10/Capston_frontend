@@ -1,1 +1,3 @@
 export const pic = require('./pic.jpg')
+export const home = require('./Home.png')
+export const Premium = require('./premium.png')
