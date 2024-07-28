@@ -10,7 +10,11 @@ module.exports = {
         secondary:"",
         tertiary:"#F0F2F5",
         mild:"#EDDECC"
-      }
+      },
+      screens: {
+        'xs': '520px',
+        // => @media (min-width: 992px) { ... }
+      },
     },
   },
   plugins: [],

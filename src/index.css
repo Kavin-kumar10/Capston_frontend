@@ -12,3 +12,12 @@
 .btn-primary{
   @apply w-fit bg-primary text-tertiary rounded-md px-4 py-1 border-2 border-primary hover:bg-tertiary hover:text-primary
 }
+
+.basic-label{
+  @apply text-sm opacity-50 font-semibold
+}
+
+.basic-input{
+  @apply px-5 py-2 rounded-md border-2 border-tertiary outline-none
+
+}
