@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { MdEdit } from "react-icons/md";
 import { FaSquarePlus,FaCamera } from "react-icons/fa6";
@@ -11,6 +11,9 @@ import Navbar from "../../Components/Navbar";
 
 
 const Account= () =>{
+    useEffect(()=>{
+        window.scrollTo(0, 0);
+    },[])
     const uploadPictures = useSelector((state)=>state.Picture.UploadPictures)
     const myprofile = useSelector((state)=>state.Members.Profile)
     const [isDisabled,setDisabled] = useState(true);
@@ -37,7 +40,7 @@ const Account= () =>{
 
             {/* Profile upload */}
             <div className="flex gap-10 flex-col-reverse xs:flex-row-reverse">
-                <div className="rounded-md w-full xs:w-3/5 bg-white p-5">
+                <div className="rounded-md w-full xs:w-3/5 bg-mode p-5">
                     <h1 className="text-xl font-bold mb-1">Profile Information</h1>
                     <p className="text-md opacity-50">Profile Information requires re-verification</p>
                     <form className="flex flex-col">
@@ -57,7 +60,7 @@ const Account= () =>{
                         <button className="btn-primary" type="submit">Update</button>
                     </form>
                 </div>
-                <div className="rounded-md w-full xs:w-2/5 bg-white p-5 items-center justify-center flex flex-col">
+                <div className="rounded-md w-full xs:w-2/5 bg-mode p-5 items-center justify-center flex flex-col">
                     <h1 className="text-xl font-bold mb-1">Profile Pic</h1>
                     <p className="text-md opacity-50">Make sure to have 1 : 1 ratio</p>
                     <form className="flex items-center justify-center flex-col">
@@ -76,7 +79,7 @@ const Account= () =>{
                 </div>
             </div>
 
-            <div className="rounded-md bg-white p-5">
+            <div className="rounded-md bg-mode p-5">
                 <h1 className="text-xl font-bold mb-1">About</h1>
                 <p className="text-md opacity-50">Describe Yourself</p>
                 <form onSubmit={(e)=>{
@@ -88,7 +91,7 @@ const Account= () =>{
             </div>
 
             {/* Images upload  */}
-            <div className="rounded-md bg-white p-5">
+            <div className="rounded-md bg-mode p-5">
                 <h1 className="text-xl font-bold mb-1">Upload your images</h1>
                 <p className="text-md opacity-50">Allowed upto 5 images</p>
                 <form onSubmit={(e)=>{
@@ -105,7 +108,7 @@ const Account= () =>{
 
 
             {/* Personal data  */}
-            <div className="rounded-md bg-white p-5">
+            <div className="rounded-md bg-mode p-5">
                 <h1 className="text-xl font-bold mb-1">Basic Data</h1>
                 <p className="text-md opacity-50">Update your Basic settings</p>
                 <form className="grid grid-cols-2 md:grid-cols-3 gap-5 my-10">

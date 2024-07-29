@@ -9,7 +9,8 @@ module.exports = {
         primary:"#EB5017",
         secondary:"",
         tertiary:"#F0F2F5",
-        mild:"#EDDECC"
+        mild:"#EDDECC",
+        mode:"#FFFFFF"
       },
       screens: {
         'xs': '520px',

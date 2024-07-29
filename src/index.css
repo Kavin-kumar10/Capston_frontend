@@ -10,7 +10,11 @@
 }
 
 .btn-primary{
-  @apply w-fit bg-primary text-tertiary rounded-md px-4 py-1 border-2 border-primary hover:bg-tertiary hover:text-primary
+  @apply w-fit bg-primary text-tertiary rounded-md px-3 py-1 border-2 border-primary hover:bg-tertiary hover:text-primary
+}
+
+.btn-secondary{
+  @apply w-fit border-2 border-primary rounded-md px-4 py-1 text-primary
 }
 
 .basic-label{

@@ -1,14 +1,18 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { history, home } from "../../Assets";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
+import Card from "../../Components/Card";
 
 const Home = () =>{
     const Members = useSelector((state)=>state.Members.allMembers);
     const dispatch = useDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    useEffect(()=>{
+        window.scrollTo(0, 0);
+    },[])
     console.log(Members);
     return(
         <div className="Home  flex flex-col">
@@ -31,22 +35,7 @@ const Home = () =>{
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     {
                         Members.map((elem)=>
-                            <div onClick={()=>{
-                                    navigate(`/Profile/${elem.memberId}`);
-                                }
-                                } className="bg-white flex flex-col shadow-md aspect-square w-full p-5 gap-5 hover:shadow-lg cursor-pointer">
-                                <div className="relative">
-                                    <img src={elem.profilePic} alt="" />
-                                    <div className="absolute top-1 right-2 ">
-                                    {elem.membership == 1 ?<p className="text-sm font-extrabold text-primary bg-white border-2 border-primary rounded-md px-1 py-1">Premium</p>:<p className="text-sm font-extrabold text-green-700 bg-white border-2 border-green-700 rounded-md px-1 py-1">Free</p>}
-                                        
-                                    </div>
-                                </div>
-                                <div className="flex flex-col">
-                                    <h1 className="font-bold text-xl">{elem.personName}</h1>
-                                    <p className="text-md opacity-50">{elem.religion}</p>
-                                </div>
-                            </div>
+                            <Card elem={elem}/>
                         )
                     }
                 </div>
