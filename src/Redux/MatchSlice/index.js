@@ -1,12 +1,13 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios'
 
-const token = JSON.parse(localStorage.getItem('token'));
+const baseurl = "https://localhost:7073/api"
+const token = JSON.parse(localStorage.getItem('user'))?.token;
 console.log(token);
 
 export const getMatchesWithMemberId = createAsyncThunk('gets/getMatchesWithMemberId',async () =>{
     try {
-        const response = await axios.get('https://localhost:7073/api/Matches?MemberId=2', {
+        const response = await axios.get(`${baseurl}/Matches?MemberId=2`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -30,7 +31,8 @@ const MatchSlice = createSlice({
         pop:false
     },
     reducers:{
-
+      setPopOpen:(state,action)=>{ state.pop = true},
+      setPopClose:(state,action)=>{ state.pop = false}
     },
     extraReducers: (builder) => {
         // Add reducers for additional action types here, and handle loading state as needed
@@ -61,5 +63,7 @@ const MatchSlice = createSlice({
 
       },
 })
+
+export const {setPopClose,setPopOpen} = MatchSlice.actions;
 
 export default MatchSlice.reducer

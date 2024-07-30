@@ -7,9 +7,8 @@ const Matches = () =>{
     const AllMatch = useSelector(state => state.Match.MyAllMatches);
     const [required,setRequired] = useState(AllMatch.Requests)
     return(
-        <div className="Matches min-h-screen bg-tertiary w-screen">
+        <div className="Matches min-h-screen bg-tertiary w-screen flex flex-col px-5 md:px-10 lg:px-20 py-28 gap-5">
             <Navbar/>
-            <div className="flex flex-col p-20 gap-5">
                 <h1 className="text-primary text-3xl font-bold">Matches</h1>
                 <ul className="flex gap-2">
                     <li onClick={()=>setRequired(AllMatch.Requests)} className="cursor-pointer px-2 py-1 rounded bg-gray-200 text-gray-800 font-semibold">Requests</li>
@@ -17,7 +16,7 @@ const Matches = () =>{
                     <li onClick={()=>setRequired(AllMatch.Matched)} className="cursor-pointer px-2 py-1 rounded bg-gray-200 text-gray-800 font-semibold">Matched</li>
                 </ul>
                 <div className="w-full h-0.5 bg-gray-400"></div>
-                <div className="grid grid-cols-5">
+                <div className="grid grid-cols-4">
                     {
                         required?.map((elem)=>
                             <Link to={`/Profile/${elem.fromProfile.memberId}`} className="bg-mode flex flex-col shadow-md aspect-square w-full p-5 gap-5 hover:shadow-lg cursor-pointer">
@@ -42,7 +41,6 @@ const Matches = () =>{
                         )
                     }
                 </div>
-            </div>
         </div>
     )
 }

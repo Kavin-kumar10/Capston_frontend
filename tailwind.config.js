@@ -7,10 +7,11 @@ module.exports = {
     extend: {
       colors:{
         primary:"#EB5017",
-        secondary:"",
+        secondary:"#1F1F29",
         tertiary:"#F0F2F5",
         mild:"#EDDECC",
-        mode:"#FFFFFF"
+        mode:"#FFFFFF",
+        offmode:"#1F1F29"
       },
       screens: {
         'xs': '520px',

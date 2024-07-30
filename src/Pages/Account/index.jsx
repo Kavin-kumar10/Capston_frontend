@@ -20,7 +20,7 @@ const Account= () =>{
     console.log(myprofile);
     const dispatch = useDispatch();
     return(
-        <div className="Account flex flex-col w-screen py-20 px-5 sm:px-10 md:px-20 bg-[#F0F2F5] gap-10">
+        <div className="Account flex flex-col w-screen py-28 px-5 sm:px-10 md:px-20 bg-[#F0F2F5] gap-10">
 
             <Tooltip id="my-tooltip" />
             <Navbar/>
@@ -29,7 +29,7 @@ const Account= () =>{
 
             <div className="flex justify-between items-start">
                 <div className="flex flex-col">
-                    <h1 className="text-2xl md:text-3xl font-bold mb-2" >Settings</h1>
+                    <h1 className="text-2xl md:text-3xl font-bold mb-2 text-primary" >Settings</h1>
                     <p className="text-sm md:text-lg opacity-50">Update your profile for better match</p>
                 </div>
                 <div onClick={()=>setDisabled((prev)=>!prev)} className="p-2 rounded-md bg-primary text-tertiary border-2 border-primary hover:bg-tertiary hover:duration-100 cursor-pointer hover:text-primary ">
@@ -45,8 +45,8 @@ const Account= () =>{
                     <p className="text-md opacity-50">Profile Information requires re-verification</p>
                     <form className="flex flex-col">
                         <div className="grid grid-cols-1 gap-5 my-10">
-                            <input name="personName" value={myprofile.personName} disabled={isDisabled} type="text" className="px-4 py-2 rounded-md outline-none shadow-sm shadow-black" />
-                            <select value={myprofile.relation} disabled={isDisabled} name="relation" className="px-4 py-2 rounded-md outline-none shadow-sm shadow-black" id="Relation">
+                            <input name="personName" value={myprofile.personName} disabled={isDisabled} type="text" className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode" />
+                            <select value={myprofile.relation} disabled={isDisabled} name="relation" className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode" id="Relation">
                                 <option value="Brother">Brother</option>
                                 <option value="Relative">Relative</option>
                                 <option value="Myself">Myself</option>
@@ -55,7 +55,7 @@ const Account= () =>{
                                 <option value="Mother">Mother</option>
                                 <option value="Father">Father</option>
                             </select>
-                            <input name="email" value={myprofile.email} disabled={isDisabled} type="email" className="px-4 py-2 rounded-md outline-none shadow-sm shadow-black"/>
+                            <input name="email" value={myprofile.email} disabled={isDisabled} type="email" className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode"/>
                         </div>
                         <button className="btn-primary" type="submit">Update</button>
                     </form>
@@ -85,7 +85,7 @@ const Account= () =>{
                 <form onSubmit={(e)=>{
                     e.preventDefault();
                 }}>
-                    <textarea disabled={isDisabled} name="about" value={myprofile.about} type="text" className="h-20 w-full my-5 px-4 py-2 rounded-md outline-none border-2 border-black"/>
+                    <textarea disabled={isDisabled} name="about" value={myprofile.about} type="text" className="h-20 w-full my-5 px-4 py-2 rounded-md outline-none border-2 border-offmode"/>
                     <button className="btn-primary" type="submit">Update</button>
                 </form>
             </div>
@@ -142,7 +142,7 @@ const Account= () =>{
                     </div>
                     <div className="flex flex-col gap-3">
                         <h1 className="basic-label">Gender</h1>
-                        <select name="gender" value={myprofile.gender} disabled={isDisabled} className="px-4 py-2 rounded-md outline-none shadow-sm shadow-black" id="Relation">
+                        <select name="gender" value={myprofile.gender} disabled={isDisabled} className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode" id="Relation">
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Others">Others</option>

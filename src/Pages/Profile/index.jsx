@@ -1,13 +1,22 @@
 import React, { useEffect,useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
-import { getMemberById } from "../../Redux/MemberSlice";
-import { getPersonalInformationByMemberId } from "../../Redux/MemberSlice";
+
+//icons
 import { MdOutlineClose } from "react-icons/md";
 import { IoIosArrowBack } from "react-icons/io";
 import { FaHeart } from "react-icons/fa";
+
+//Components
 import Map from "../../Components/Map";
 
+//Reducers
+import { setPopClose,setPopOpen } from "../../Redux/MatchSlice";
+
+//Async Functions
+import { getMemberById } from "../../Redux/MemberSlice";
+import { getPersonalInformationByMemberId } from "../../Redux/MemberSlice";
+import { postLikesByMemberId } from "../../Redux/LikeSlice";
 
 
 
@@ -15,37 +24,6 @@ const Profile = () =>{
     const dispatch = useDispatch();
 
     const [img,setImg] = useState();
-
-    // const PersonalDetail = {
-    //     "personalDetailsId": 1,
-    //     "memberId": 1,
-    //     "familyType": "Nuclear",
-    //     "familyValue": "Traditional",
-    //     "familyStatus": "Upper",
-    //     "education": "Bachelor's in Computer Science",
-    //     "professionName": "Software Engineer",
-    //     "location": {
-    //         "locateId": 1,
-    //         "lat": 72,
-    //         "long": 83.222,
-    //         "personalDetailsId": 1
-    //     },
-    //     "annualIncome": "60000",
-    //     "pictures": [
-    //         {
-    //             "pictureId": 1,
-    //             "pictureUrl": "https://kavincapstone.blob.core.windows.net/kavinimages/a4151274-cd05-4500-aea5-e1d07d753252.jpg",
-    //             "personalDetailsId": 1
-    //         },
-    //         {
-    //             "pictureId": 2,
-    //             "pictureUrl": "https://kavincapstone.blob.core.windows.net/kavinimages/a4151274-cd05-4500-aea5-e1d07d753252.jpg",
-    //             "personalDetailsId": 1
-    //         }
-    //     ]
-    // }
-
-
 
     //My Profile
     const myprofile = useSelector(state => state.Members.Profile)
@@ -68,9 +46,11 @@ const Profile = () =>{
 
     return(
         <div className="w-screen  flex flex-col p-5 md:p-10 lg:p-20 gap-5 bg-tertiary">
+
+            {/* Preview image  */}
             {
                 img?
-                <div className="fixed top-0 left-0 flex flex-col items-center justify-center w-full h-screen bg-black bg-opacity-50 z-50">
+                <div className="fixed top-0 left-0 flex flex-col items-center justify-center w-full h-screen bg-offmode bg-opacity-50 z-50">
                 <div className="bg-tertiary rounded-lg w-full max-w-md p-6">
                   <div className="flex justify-between items-center">
                     <h1 className="text-xl font-bold">Preview</h1>
@@ -86,16 +66,18 @@ const Profile = () =>{
               <></>
             }
 
+
+            {/* Request pop */}
             {
                 pop?
                 <div id="MatchRequestPop" class="rounded-md h-screen z-20 w-screen fixed bg-mode bg-opacity-50 top-0 left-0 flex items-center justify-center">
                     <div class="bg-mode p-5 w-full m-1 md:w-1/2 lg:w-1/3 rounded-sm shadow-sm shadow-secondary">
-                        <h1 class="text-secondary text-xl md:text-2xl font-semibold my-3">Match Request</h1>
+                        <h1 class="text-primary text-xl md:text-2xl font-semibold my-3">Match Request</h1>
                         <p class="mb-3 text-lg text-secondary opacity-60">Match request to {selected.personName}</p>
-                        <input id="message" name="message" class="rounded-md w-full px-2 md:px-5 py-1 md:py-2 outline-none border-2 border-secondary" type="text" placeholder="Hey Let's get matched ...."/>
+                        <input id="message" name="message" class="rounded-md w-full px-2 md:px-5 py-1 md:py-2 outline-none border border-secondary" type="text" placeholder="Hey Let's get matched ...."/>
                         <div class="flex mt-3 gap-5">
-                            <button id="submission" class="rounded-md bg-secondary text-black border-2 border-secondary md:px-4 md:py-1 px-2 py-1">Cancel</button>
-                            <button id="cancel"  class="rounded-md bg-primary text-mode border-2 border-secondary md:px-4 md:py-1 px-2 py-1 ">Request</button>
+                            <button onClick={()=>dispatch(setPopClose())} id="cancel" class="rounded-md bg-tertiary text-offmode border-2 border-tertiary md:px-4 md:py-1 px-2 py-1">Cancel</button>
+                            <button  id="submission"  class="rounded-md bg-primary text-mode border-2 border-primary md:px-4 md:py-1 px-2 py-1 ">Request</button>
                         </div>
                     </div>
                 </div>:<></>
@@ -130,8 +112,8 @@ const Profile = () =>{
                     <div className="flex flex-col gap-4 items-start">
                         <h1 className="text-md font-bold opacity-50">Hurry up ... ! Send Match Request Now ... !</h1>
                             <div className="flex gap-3">
-                                <button className="text-tertiary bg-primary px-2 py-1 rounded-md">Request Match</button>
-                                <button className="border-2 border-primary text-primary px-2 py-1 rounded-md flex gap-2 items-center justify-center"><FaHeart size={20}/> Hit</button>
+                                <button onClick={()=>dispatch(setPopOpen())} className="text-tertiary bg-primary px-2 py-1 rounded-md">Request Match</button>
+                                <button onClick={()=>dispatch(postLikesByMemberId(selected.memberId))} className="border-2 border-primary text-primary px-2 py-1 rounded-md flex gap-2 items-center justify-center"><FaHeart size={20}/> Hit</button>
                             </div>
                         </div>
                 </div>
@@ -156,7 +138,7 @@ const Profile = () =>{
                     {/* <p className="text-md opacity-50 mb-5">Described as</p> */}
                     {
                         selected.hobby?.map((elem)=>
-                            <h2 className="font-bold opacity-60 px-2 py-1 shadow-sm shadow-black w-fit rounded-md text-xs sm:text-sm md:text-md">#{elem.hobbyName}</h2>
+                            <h2 className="font-bold opacity-60 px-2 py-1 shadow-sm shadow-offmode w-fit rounded-md text-xs sm:text-sm md:text-md">#{elem.hobbyName}</h2>
                         )
                     }
                 </div>
@@ -180,14 +162,14 @@ const Profile = () =>{
                             </div>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 md:gap-10 p-1 sm:p-3 md:p-5">
-                            <div className="flex flex-col p-3 md:p-5 rounded-md shadow-sm shadow-black">
+                            <div className="flex flex-col p-3 md:p-5 rounded-md shadow-sm shadow-offmode">
                                 <h1 className="text-xl text-primary font-bold">Professional Status</h1>
                                 <p className="text-md opacity-50 mb-2">Employment</p>
                                 <h2 className="font-bold opacity-60 text-sm sm:text-md md:text-lg">Current job : {selected.PersonalDetail.professionName}</h2>
                                 <h2 className="font-bold opacity-60 text-sm sm:text-md md:text-lg">Salary : {selected.PersonalDetail.annualIncome}</h2>
                                 <h2 className="font-bold opacity-60 text-sm sm:text-md md:text-lg">Education : {selected.PersonalDetail.education}</h2>
                             </div>
-                            <div className="flex flex-col p-3 md:p-5 rounded-md shadow-sm shadow-black">
+                            <div className="flex flex-col p-3 md:p-5 rounded-md shadow-sm shadow-offmode">
                                 <h1 className="text-xl text-primary font-bold">Family Status</h1>
                                 <p className="text-md opacity-50 mb-2">Family</p>
                                 <h2 className="font-bold opacity-60 text-sm sm:text-md md:text-lg">Family Type : {selected.PersonalDetail.familyType}</h2>
