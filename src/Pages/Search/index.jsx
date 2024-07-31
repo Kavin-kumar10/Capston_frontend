@@ -18,8 +18,8 @@ const Search = () =>{
         <div className="Search min-h-screen w-screen flex flex-col px-5 md:px-10 lg:px-20 py-28 gap-5 bg-tertiary">
             <Navbar/>
             <div className="flex flex-col gap-2">
-                <h1 className="text-primary  text-xl sm:text-3xl font-bold">Search</h1>
-                <p className="text-sm sm:text-xl font-semibold opacity-50">Find your perfect partner</p>
+                <h1 className="text-primary  text-2xl sm:text-3xl font-bold">Search</h1>
+                <p className="text-lg sm:text-xl font-semibold opacity-50">Find your perfect partner</p>
             </div>
             <div className="bar flex gap-2 relative z-10">
                 <input onChange={(e)=>dispatch(SearchBarFilter(e.target.value))} type="text" id="search" class="block p-2 w-fit outline-none text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" placeholder="Search"/>
@@ -31,7 +31,7 @@ const Search = () =>{
                     </div>:<></>
                 }
             </div>
-            <div className="grid grid-cols-4 gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                 {
                     Filtered.map((elem)=>
                         <Card elem={elem}/>

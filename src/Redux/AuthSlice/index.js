@@ -38,6 +38,7 @@ export const postLoginRequest = createAsyncThunk('posts/postLoginRequest',async 
             },
           });
           console.log(response.data);
+          localStorage.setItem('user',JSON.stringify(response.data));
           return response.data;
       } 
       catch (error) {
@@ -113,7 +114,6 @@ const AuthSlice = createSlice({
         })
         .addCase(postLoginRequest.fulfilled, (state, action) => {
             state.loading = false;
-            localStorage.setItem('user',JSON.stringify(action.payload));
         })
         .addCase(postLoginRequest.rejected, (state, action) => {
             state.loading = false;

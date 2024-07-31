@@ -8,16 +8,18 @@ const PrivateRoutes = () => {
     let isAuthenticated = useSelector(state => state.Auth.isAuthenticated)
     const dispatch = useDispatch();
     useEffect(()=>{
-        if(localStorage.getItem('user')){
-            const localdata = JSON.parse(localStorage.getItem('user'));
-            dispatch(Validator(localdata.token));
-            console.log(localdata);
-        }
-        else{
-            dispatch(setAuthenticated(false))
-            alert("un authorized entry")
-        }
-    },[])
+        setTimeout(()=>{
+            if(localStorage.getItem('user')){
+                const localdata = JSON.parse(localStorage.getItem('user'));
+                dispatch(Validator(localdata.token));
+                console.log(localdata);
+            }
+            else{
+                dispatch(setAuthenticated(false))
+                // alert("un authorized entry")
+            }
+        })
+    },[dispatch])
     return(
         isAuthenticated ? <Outlet/> : <Navigate to="/Login"/>
     )

@@ -35,6 +35,22 @@ export const postLikesByMemberId = createAsyncThunk('post/postLikesByMemberId',a
       }
 })
 
+export const deleteLikeByLikeId = createAsyncThunk('delete/deleteLikeByLikeId',async (likeId) =>{
+  try {
+      const response = await axios.delete(`${baseurl}/Like?LikeId=${likeId}`,{},{
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      // const dispatch = useDispatch();
+      // dispatch(getLikesByMemberId())
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching personal information:', error);
+      throw error;
+    }
+})
+
 
 const LikeSlice = createSlice({
     name:"Like",
@@ -68,6 +84,18 @@ const LikeSlice = createSlice({
             state.loading = false;
         })
         .addCase(postLikesByMemberId.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message; // Capture error message
+        });
+
+        builder
+        .addCase(deleteLikeByLikeId.pending,(state)=>{
+          state.loading = true;
+        })
+        .addCase(deleteLikeByLikeId.fulfilled, (state, action) => {
+          state.loading = false;
+        })
+        .addCase(deleteLikeByLikeId.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message; // Capture error message
         });

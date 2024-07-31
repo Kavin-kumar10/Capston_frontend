@@ -1,6 +1,7 @@
 import React, { useEffect,useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 //icons
 import { MdOutlineClose } from "react-icons/md";
@@ -12,16 +13,19 @@ import Map from "../../Components/Map";
 
 //Reducers
 import { setPopClose,setPopOpen } from "../../Redux/MatchSlice";
+import { setPostMessage,setPostToProfileId } from "../../Redux/MatchSlice";
 
 //Async Functions
 import { getMemberById } from "../../Redux/MemberSlice";
 import { getPersonalInformationByMemberId } from "../../Redux/MemberSlice";
 import { postLikesByMemberId } from "../../Redux/LikeSlice";
+import { postNewMatch } from "../../Redux/MatchSlice";
 
 
 
 const Profile = () =>{
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [img,setImg] = useState();
 
@@ -33,6 +37,7 @@ const Profile = () =>{
 
     //Pop
     const pop = useSelector(state => state.Match.pop)
+    const postmatch = useSelector(state=>state.Match.PostMatchRequest)
 
     //Get Request for Selected 
     let value = useParams();
@@ -74,10 +79,10 @@ const Profile = () =>{
                     <div class="bg-mode p-5 w-full m-1 md:w-1/2 lg:w-1/3 rounded-sm shadow-sm shadow-secondary">
                         <h1 class="text-primary text-xl md:text-2xl font-semibold my-3">Match Request</h1>
                         <p class="mb-3 text-lg text-secondary opacity-60">Match request to {selected.personName}</p>
-                        <input id="message" name="message" class="rounded-md w-full px-2 md:px-5 py-1 md:py-2 outline-none border border-secondary" type="text" placeholder="Hey Let's get matched ...."/>
+                        <input onChange={(e)=>dispatch(setPostMessage(e.target.value))} id="message" name="message" class="rounded-md w-full px-2 md:px-5 py-1 md:py-2 outline-none border border-secondary" type="text" placeholder="Hey Let's get matched ...."/>
                         <div class="flex mt-3 gap-5">
                             <button onClick={()=>dispatch(setPopClose())} id="cancel" class="rounded-md bg-tertiary text-offmode border-2 border-tertiary md:px-4 md:py-1 px-2 py-1">Cancel</button>
-                            <button  id="submission"  class="rounded-md bg-primary text-mode border-2 border-primary md:px-4 md:py-1 px-2 py-1 ">Request</button>
+                            <button onClick={()=>dispatch(postNewMatch(postmatch))} id="submission"  class="rounded-md bg-primary text-mode border-2 border-primary md:px-4 md:py-1 px-2 py-1 ">Request</button>
                         </div>
                     </div>
                 </div>:<></>
@@ -86,10 +91,10 @@ const Profile = () =>{
             {/* Header */}
 
             <div className="flex items-center justify-between">
-                <Link to="/" className="back font-bold opacity-50 flex items-center justify-start ">
+                <div onClick={()=>navigate(-1)} className="back font-bold cursor-pointer opacity-50 flex items-center justify-start ">
                     <IoIosArrowBack/> &nbsp;
                     <p className="hover:underline hidden sm:block">Back to home page</p>
-                </Link>
+                </div>
                 {
                     myprofile.membership == 1 && myprofile.dailyLog ?
                     <p className="back font-bold opacity-50 flex items-center justify-start"> Credits Remain : {myprofile.dailyLog.creditsCount}</p>:<></>
@@ -112,7 +117,12 @@ const Profile = () =>{
                     <div className="flex flex-col gap-4 items-start">
                         <h1 className="text-md font-bold opacity-50">Hurry up ... ! Send Match Request Now ... !</h1>
                             <div className="flex gap-3">
-                                <button onClick={()=>dispatch(setPopOpen())} className="text-tertiary bg-primary px-2 py-1 rounded-md">Request Match</button>
+                                <button onClick={()=>
+                                    {
+                                        dispatch(setPopOpen());
+                                        dispatch(setPostToProfileId(selected.memberId))
+                                    }
+                                } className="text-tertiary bg-primary px-2 py-1 rounded-md">Request Match</button>
                                 <button onClick={()=>dispatch(postLikesByMemberId(selected.memberId))} className="border-2 border-primary text-primary px-2 py-1 rounded-md flex gap-2 items-center justify-center"><FaHeart size={20}/> Hit</button>
                             </div>
                         </div>
@@ -168,6 +178,7 @@ const Profile = () =>{
                                 <h2 className="font-bold opacity-60 text-sm sm:text-md md:text-lg">Current job : {selected.PersonalDetail.professionName}</h2>
                                 <h2 className="font-bold opacity-60 text-sm sm:text-md md:text-lg">Salary : {selected.PersonalDetail.annualIncome}</h2>
                                 <h2 className="font-bold opacity-60 text-sm sm:text-md md:text-lg">Education : {selected.PersonalDetail.education}</h2>
+                                <h2 className="font-bold opacity-60 text-sm sm:text-md md:text-lg">Mobile : {selected.PersonalDetail.mobile}</h2>
                             </div>
                             <div className="flex flex-col p-3 md:p-5 rounded-md shadow-sm shadow-offmode">
                                 <h1 className="text-xl text-primary font-bold">Family Status</h1>

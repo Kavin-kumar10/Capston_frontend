@@ -2,7 +2,7 @@ import './App.css';
 import { useEffect } from 'react';
 import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
 import { useDispatch,useSelector } from 'react-redux';
-import { getMembers, getMyProfile } from './Redux/MemberSlice';
+import { getMembers, getMyPersonalDetails, getMyProfile } from './Redux/MemberSlice';
 import Home from './Pages/Home';
 import Account from './Pages/Account';
 import Login from './Pages/Auth/Login';
@@ -15,6 +15,7 @@ import LikeScreen from './Pages/LikeScreen';
 import PrivateRoutes from './utils/PrivateRoute';
 import { Validator } from './Redux/AuthSlice';
 import { getLikesByMemberId } from './Redux/LikeSlice';
+import Activate from './Pages/Admin/Activate';
 
 
 function App() {
@@ -22,8 +23,7 @@ function App() {
   useEffect(()=>{
     dispatch(getMembers())
     dispatch(getMyProfile())
-    dispatch(getMatchesWithMemberId());
-    dispatch(getLikesByMemberId())
+    dispatch(getMyPersonalDetails())
     if(localStorage.getItem('user')){
       const localdata = JSON.parse(localStorage.getItem('user'));
       dispatch(Validator(localdata.token))
@@ -37,14 +37,15 @@ console.log(token);
         <Routes>
           <Route path='/Login' element={<Login/>}/>
           <Route path='/Register' element={<Register/>}/>
-          <Route element={<PrivateRoutes/>}>
+          {/* <Route element={<PrivateRoutes/>}> */}
             <Route path='/' element={<Home/>}/>
             <Route path='/Profile/:userid' element={<Profile/>}/>
             <Route path='/Account' element={<Account/>}/>
             <Route path='/Matches' element={<Matches/>}/>
             <Route path='/Search' element={<Search/>}/>
             <Route path='/Like' element={<LikeScreen/>}/>
-          </Route>
+            <Route path='/Admin/Activate' element={<Activate/>}/>
+          {/* </Route> */}
         </Routes>
       </div>
     </Router>

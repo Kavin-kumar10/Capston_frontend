@@ -5,6 +5,7 @@ import PicturesSlice from './PicturesSlice';
 import MatchSlice from './MatchSlice';
 import AuthSlice from './AuthSlice';
 import LikeSlice from './LikeSlice';
+import AdminSlice from './AdminSlice';
 
 
 const reducer = combineReducers({
@@ -12,7 +13,8 @@ const reducer = combineReducers({
     Picture:PicturesSlice,
     Match:MatchSlice,
     Auth:AuthSlice,
-    Like:LikeSlice
+    Like:LikeSlice,
+    Admin:AdminSlice
 })
 
 

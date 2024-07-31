@@ -15,9 +15,9 @@ const Home = () =>{
     },[])
     console.log(Members);
     return(
-        <div className="Home  flex flex-col">
+        <div className="Home flex flex-col">
             <Navbar/>
-            <div className="flex bg-mild px-5 sm:px-10 md:px-20 h-screen flex-col-reverse text-center md:text-right md:flex-row">
+            <div className="flex bg-mild py-28 xl:py-0 px-5 sm:px-10 md:px-20 h-screen flex-col-reverse text-center md:text-right md:flex-row">
                 <div className="w-full h-full md:w-1/2 flex gap-5 justify-center items-center md:items-end flex-col ">
                     <h1 className="text-4xl md:text-4xl lg:text-6xl font-bold bg-gradient-to-r from-black via-primary to-primary bg-clip-text text-transparent">Soul Finder</h1>
                     <h3 className="text-lg md:text-2xl lg:text-4xl font-bold">Find Your <span className="text-primary">Perfect Partner</span></h3>

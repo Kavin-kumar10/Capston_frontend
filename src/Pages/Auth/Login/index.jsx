@@ -47,7 +47,7 @@ const Login = () =>{
                     handlereset();
                     setTimeout(()=>{
                         window.location.reload();
-                    })
+                    },1000)
                 }} id="login" action="/" className="w-full gap-2 py-5 rounded-md flex items-center justify-center flex-col">
                         <div className="flex flex-col mb-3 w-full md:w-2/3 lg:w-1/2">
                             <div className="flex justify-between">

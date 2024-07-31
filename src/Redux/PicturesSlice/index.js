@@ -7,19 +7,46 @@ import axios from 'axios'
 //     })
 // })
 
+const baseurl = "https://localhost:7073/api"
+const localdata = JSON.parse(localStorage.getItem('user'));
+
 export const postMyPictures = createAsyncThunk('post/postMyPictures',async (uploadPictures) => {
     try {            
         const formData = new FormData();
         console.log(uploadPictures);
+        let {id,pictures} = uploadPictures
         
-        for (let i = 0; i < uploadPictures.length; i++) {
-            formData.append('formfiles', uploadPictures[i]);
+        for (let i = 0; i < pictures.length; i++) {
+            formData.append('formfiles', pictures[i]);
         }
 
         console.log(formData);
-        const response = await axios.post(`https://localhost:7073/api/Picture/1`, formData, {
+        const response = await axios.post(`${baseurl}/Picture/${id}`, formData, {
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${localdata.token}`,
+            }
+        });
+        console.log('File paths:', response.data);
+    } catch (error) {
+        console.error('Error uploading files:', error);
+    }
+})
+
+export const updateProfilePic = createAsyncThunk('post/updateProfilePic',async (profile) => {
+    try {            
+        const formData = new FormData();
+        console.log(profile);
+        
+        for (let i = 0; i < profile.length; i++) {
+            formData.append('formfiles', profile[i]);
+        }
+
+        console.log(formData);
+        const response = await axios.post(`${baseurl}/Member/ProfileUpdate`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${localdata.token}`
             }
         });
         console.log('File paths:', response.data);
@@ -31,12 +58,17 @@ export const postMyPictures = createAsyncThunk('post/postMyPictures',async (uplo
 const PictureSlice = createSlice({
     name:"Member",
     initialState:{
-        UploadPictures:["hello"],
+        UploadPictures:[],
+        profilePic:[],
         loading:false
     },
     reducers:{
         valueupdate:(state,action)=>{
             state.UploadPictures = action.payload;
+            console.log(action.payload);
+        },
+        setProfilePic:(state,action)=>{
+            state.profilePic = action.payload;
             console.log(action.payload);
         }
     },
@@ -53,6 +85,6 @@ const PictureSlice = createSlice({
       },
 })
 
-export const {valueupdate} = PictureSlice.actions;
+export const {valueupdate,setProfilePic} = PictureSlice.actions;
 
 export default PictureSlice.reducer

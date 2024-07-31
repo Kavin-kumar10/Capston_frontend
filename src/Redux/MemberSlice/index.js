@@ -17,7 +17,7 @@ export const getMembers = createAsyncThunk('gets/getMembers',async () =>{
 // Get member details by id
 
 export const getMemberById = createAsyncThunk('gets/getMemberById',async (id) =>{
-    return axios.get(`${baseurl}/Member/Profile/${id}`).then((res)=>{
+    return axios.get(`${baseurl}/Member/GetByMemberId/?memberId=${id}`).then((res)=>{
         return res.data;
     })
 })
@@ -25,10 +25,53 @@ export const getMemberById = createAsyncThunk('gets/getMemberById',async (id) =>
 //Get My profile details
 
 export const getMyProfile = createAsyncThunk('gets/getMyProfile',async () =>{
-    return axios.get(`${baseurl}/Member/Profile/3`).then((res)=>{
-        return res.data;
-    })
+    try {
+        const response = await axios.get(`${baseurl}/Member/Profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching personal information:', error);
+        throw error;
+      }
 })
+
+export const updateMyProfile = createAsyncThunk('put/putMyProfile',async (newProfile) =>{
+  try {
+      const response = await axios.put(`${baseurl}/Member`, newProfile,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("Below is updated");
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching personal information:', error);
+      throw error;
+    }
+})
+
+
+
+// Get my Personal details
+
+export const getMyPersonalDetails = createAsyncThunk('gets/getMyPersonalDetails',async () =>{
+    try {
+        const response = await axios.get(`${baseurl}/PersonalDetails/GetPersonalDetailByToken`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching personal information:', error);
+        throw error;
+      }
+})
+
 
 export const getPersonalInformationByMemberId = createAsyncThunk('gets/getsPersonalInformation',async () =>{
     try {
@@ -51,6 +94,7 @@ const MemberSlice = createSlice({
     initialState:{
         allMembers:[],
         Profile:{},
+        mypersonaldetail:{},
         Selected:{},
         loading:[],
         Search:{
@@ -94,6 +138,10 @@ const MemberSlice = createSlice({
         })
         builder.addCase(getMemberById.fulfilled,(state,action)=>{
             state.Selected = action.payload;
+        })
+        builder.addCase(getMyPersonalDetails.fulfilled,(state,action)=>{
+            state.Profile = {...state.Profile,PersonalDetails:action.payload};
+            state.mypersonaldetail = action.payload;
         })
         builder.addCase(getPersonalInformationByMemberId.fulfilled,(state,action)=>{
             state.Selected = {...state.Selected,PersonalDetail:action.payload}
