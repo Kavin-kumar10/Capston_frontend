@@ -42,8 +42,8 @@ export const postLoginRequest = createAsyncThunk('posts/postLoginRequest',async 
           return response.data;
       } 
       catch (error) {
-        console.error('Error fetching personal information:', error);
-        throw error;
+        console.error('Error loggin in information:', error?.response?.data?.message);
+        throw error?.response?.data?.message;
       }
 })
 

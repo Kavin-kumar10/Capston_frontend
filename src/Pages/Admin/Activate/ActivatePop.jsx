@@ -8,7 +8,7 @@ const ActivatePop = () =>{
     const Activator = useSelector(state=>state.Admin.Activate)
     const dispatch = useDispatch();
     return(
-        <div id="ActivatePop" class="rounded-md h-screen z-20 w-screen fixed bg-white bg-opacity-50 top-0 left-0 flex items-center justify-center">
+        <div id="ActivatePop" className="rounded-md h-screen z-20 w-screen fixed bg-white bg-opacity-50 top-0 left-0 flex items-center justify-center">
         <div class="bg-white p-5 w-full m-1 sm:w-1/2 lg:w-1/3 rounded-md shadow-sm shadow-secondary">
             <h1 class="text-primary opacity-80 text-xl md:text-3xl font-bold my-3">Activate Account</h1>
             <p class="mb-3 text-lg text-secondary opacity-60">Member Id : {Selected.memberId}</p>

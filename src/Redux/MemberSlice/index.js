@@ -72,10 +72,41 @@ export const getMyPersonalDetails = createAsyncThunk('gets/getMyPersonalDetails'
       }
 })
 
+export const updatePersonalData = createAsyncThunk('put/putMyPersonalData',async (newPersonalData) =>{
+  try {
+      const response = await axios.put(`${baseurl}/PersonalDetails`, newPersonalData,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("Below is updated Personal Data");
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching personal information:', error);
+      throw error;
+    }
+})
 
-export const getPersonalInformationByMemberId = createAsyncThunk('gets/getsPersonalInformation',async () =>{
+export const postLocate = createAsyncThunk('post/postLocate',async (postdata) =>{
+  try {
+      const response = await axios.post(`${baseurl}/Locate`, postdata ,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error('Error posting Locate:', error);
+      throw error;
+    }
+})
+
+
+export const getPersonalInformationByMemberId = createAsyncThunk('gets/getsPersonalInformation',async (id) =>{
     try {
-        const response = await axios.get(`${baseurl}/PersonalDetails/GetByMemberId?MemberId=1`, {
+        const response = await axios.get(`${baseurl}/PersonalDetails/GetByMemberId?MemberId=${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -100,9 +131,34 @@ const MemberSlice = createSlice({
         Search:{
             SearchPop:false,
             filtered:[]
-        }
+        },
+
+        //Additional
+        Navselect:null
     },
     reducers:{
+        setNav:(state,action)=>{
+          state.Navselect = action.payload;
+        },
+        setFilteredToAll:(state,action)=>{
+          state.Search.filtered = state.allMembers;
+        },
+        setChangesToFiltered:(state,action)=>{
+          let {allMembers,filters} = action.payload;
+          const appliedFilters = Object.entries(filters).filter(
+            ([key, value]) => value // Filter out empty values
+          );
+      
+          const filteredData = allMembers.filter((member) => {
+            return appliedFilters.every(([filterKey, filterValue]) => {
+              // Check if each filter matches the member's property
+              return member[filterKey] === filterValue;
+            });
+          });
+
+          state.Search.filtered = filteredData;
+          console.log(action.payload);
+        },
         handlePop:(state,action)=>{
             if(action.payload == 'open') state.Search.SearchPop = true;
             else state.Search.SearchPop = false;
@@ -130,11 +186,13 @@ const MemberSlice = createSlice({
         // Add reducers for additional action types here, and handle loading state as needed
         builder.addCase(getMembers.fulfilled, (state, action) => {
           // Add user to the state array
-          state.allMembers = action.payload;
-          state.Search.filtered = action.payload;
+          state.allMembers = action.payload.filter((elem)=>elem.role == 0);
+          state.Search.filtered = action.payload.filter((elem)=>elem.role == 0);
         })
         builder.addCase(getMyProfile.fulfilled,(state,action)=>{
             state.Profile = action.payload;
+            state.allMembers = state.allMembers.filter((members)=>members.memberId != state.Profile.memberId);
+            state.Search.filtered = state.Search.filtered.filter((members)=>members.memberId != state.Profile.memberId);
         })
         builder.addCase(getMemberById.fulfilled,(state,action)=>{
             state.Selected = action.payload;
@@ -145,13 +203,15 @@ const MemberSlice = createSlice({
         })
         builder.addCase(getPersonalInformationByMemberId.fulfilled,(state,action)=>{
             state.Selected = {...state.Selected,PersonalDetail:action.payload}
-            if (state.Profile && state.Profile.dailyLog && state.Profile.dailyLog.creditsCount !== undefined) {
-                state.Profile.dailyLog.creditsCount -= 1;
-              }        
-            })
+            // if (state.Profile && state.Profile.dailyLog && state.Profile.dailyLog.creditsCount !== undefined) {
+            //   if(state.Profile.dailyLog.creditsCount >0)
+            //     state.Profile.dailyLog.creditsCount -= 1;
+            //   }        
+            }
+          )
       },
 })
 
-export const {handlePop,SearchBarFilter} = MemberSlice.actions;
+export const {handlePop,SearchBarFilter,setChangesToFiltered,setFilteredToAll,setNav} = MemberSlice.actions;
 
 export default MemberSlice.reducer

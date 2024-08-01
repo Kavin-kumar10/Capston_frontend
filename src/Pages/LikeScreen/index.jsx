@@ -4,6 +4,7 @@ import Card from "../../Components/Card";
 import { useSelector,useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { deleteLikeByLikeId,getLikesByMemberId } from "../../Redux/LikeSlice";
+import Toastify from "../../utils/Toastify";
 
 const LikeScreen = () =>{
     const LikedProfiles = useSelector(state=>state.Like.Liked);
@@ -35,9 +36,16 @@ const LikeScreen = () =>{
                             </div>
                             <div className="flex gap-2">
                                 <Link to={`/Profile/${elem.liked.memberId}`} className="bg-primary text-tertiary border border-primary rounded-md px-3 py-1">View</Link>
-                                <button onClick={()=>{dispatch(deleteLikeByLikeId(elem.likeId))}} className="text-primary bg-tertiary border border-primary rounded-md px-3 py-1">Remove</button>
+                                <button onClick={()=>{
+                                    dispatch(deleteLikeByLikeId(elem.likeId))
+                                    Toastify.success("Removed from Wishlist");
+                                    setTimeout(()=>{
+                                        window.location.reload()
+                                    },1000)
+                                }} className="text-primary bg-tertiary border border-primary rounded-md px-3 py-1">Remove</button>
                             </div>
-                        </div>                    )
+                        </div>                    
+                        )
                 }
             </div>
         </div>

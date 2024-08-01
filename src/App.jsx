@@ -1,4 +1,6 @@
 import './App.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from 'react';
 import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
 import { useDispatch,useSelector } from 'react-redux';
@@ -15,10 +17,12 @@ import LikeScreen from './Pages/LikeScreen';
 import PrivateRoutes from './utils/PrivateRoute';
 import { Validator } from './Redux/AuthSlice';
 import { getLikesByMemberId } from './Redux/LikeSlice';
+import Aos from 'aos';
 import Activate from './Pages/Admin/Activate';
 
 
 function App() {
+  Aos.init();
   const dispatch = useDispatch();
   useEffect(()=>{
     dispatch(getMembers())
@@ -34,10 +38,11 @@ console.log(token);
   return (
     <Router>
       <div className="App overflow-x-hidden text-offmode">
+      <ToastContainer />
         <Routes>
           <Route path='/Login' element={<Login/>}/>
           <Route path='/Register' element={<Register/>}/>
-          {/* <Route element={<PrivateRoutes/>}> */}
+          <Route element={<PrivateRoutes/>}>
             <Route path='/' element={<Home/>}/>
             <Route path='/Profile/:userid' element={<Profile/>}/>
             <Route path='/Account' element={<Account/>}/>
@@ -45,7 +50,7 @@ console.log(token);
             <Route path='/Search' element={<Search/>}/>
             <Route path='/Like' element={<LikeScreen/>}/>
             <Route path='/Admin/Activate' element={<Activate/>}/>
-          {/* </Route> */}
+          </Route>
         </Routes>
       </div>
     </Router>

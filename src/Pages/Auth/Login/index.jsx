@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import { useSelector,useDispatch } from "react-redux";
 import { logo } from "../../../Assets";
 import { Link } from "react-router-dom";
 import { postLoginRequest } from "../../../Redux/AuthSlice";
 import { Validator } from "../../../Redux/AuthSlice";
 import { setLogEmail, setLogPassword } from "../../../Redux/AuthSlice";
+import Toastify from "../../../utils/Toastify";
 import { useNavigate } from "react-router-dom";
 
 const Login = () =>{
@@ -20,10 +23,10 @@ const Login = () =>{
         // }
         if(isAuthenticated){
             navigate('/');
-            console.log("its working");
         }
+        
     },[])
-
+    
     const handleEmailChange = (e) => {
         dispatch(setLogEmail(e.target.value)); // Dispatch action to update email
     };
@@ -39,15 +42,33 @@ const Login = () =>{
 
     return(
         <div className="Login h-screen w-screen flex">
+            <ToastContainer/>
             <div className="w-full sm:w-1/2 h-full p-5 flex flex-col items-center justify-center">
-                <h1 className="text-3xl text-secondary font-bold my-5">Login</h1>
-                <form onSubmit={(e)=>{
+                <h1 className="text-3xl text-secondary font-bold my-5" >Login</h1>
+                <form onSubmit={async (e)=>{
                     e.preventDefault();
-                    dispatch(postLoginRequest(Log))
+                    try {
+                        const resultAction = await dispatch(postLoginRequest(Log));
+                
+                        if (postLoginRequest.fulfilled.match(resultAction)) {
+                            console.log('Operation succeeded:', resultAction.payload);
+                            Toastify.success("Login Success, Please wait...")
+                            // Perform actions on successful login, like redirecting
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 1000);
+                        } else {
+                            Toastify.error(resultAction.error.message);
+                            console.error('Operation failed:', resultAction.error.message);
+                            if(resultAction.error.message == "User is disabled"){
+                                Toastify.info("Get verified call : 9876543214");
+                            }
+                            // Handle errors
+                        }
+                    } catch (error) {
+                        console.error('Unexpected error:', error);
+                    }
                     handlereset();
-                    setTimeout(()=>{
-                        window.location.reload();
-                    },1000)
                 }} id="login" action="/" className="w-full gap-2 py-5 rounded-md flex items-center justify-center flex-col">
                         <div className="flex flex-col mb-3 w-full md:w-2/3 lg:w-1/2">
                             <div className="flex justify-between">

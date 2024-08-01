@@ -20,6 +20,7 @@ import { getMemberById } from "../../Redux/MemberSlice";
 import { getPersonalInformationByMemberId } from "../../Redux/MemberSlice";
 import { postLikesByMemberId } from "../../Redux/LikeSlice";
 import { postNewMatch } from "../../Redux/MatchSlice";
+import Toastify from "../../utils/Toastify";
 
 
 
@@ -82,7 +83,17 @@ const Profile = () =>{
                         <input onChange={(e)=>dispatch(setPostMessage(e.target.value))} id="message" name="message" class="rounded-md w-full px-2 md:px-5 py-1 md:py-2 outline-none border border-secondary" type="text" placeholder="Hey Let's get matched ...."/>
                         <div class="flex mt-3 gap-5">
                             <button onClick={()=>dispatch(setPopClose())} id="cancel" class="rounded-md bg-tertiary text-offmode border-2 border-tertiary md:px-4 md:py-1 px-2 py-1">Cancel</button>
-                            <button onClick={()=>dispatch(postNewMatch(postmatch))} id="submission"  class="rounded-md bg-primary text-mode border-2 border-primary md:px-4 md:py-1 px-2 py-1 ">Request</button>
+                            <button onClick={async ()=>{
+                                    try{
+                                        const requestingAction = await dispatch(postNewMatch(postmatch))
+                                        Toastify.success("Request Sent Successfull");
+                                        dispatch(setPopClose())
+                                    }
+                                    catch(err){
+                                        console.error(err)
+                                    }
+                                }
+                            } id="submission"  class="rounded-md bg-primary text-mode border-2 border-primary md:px-4 md:py-1 px-2 py-1 ">Request</button>
                         </div>
                     </div>
                 </div>:<></>
@@ -117,13 +128,25 @@ const Profile = () =>{
                     <div className="flex flex-col gap-4 items-start">
                         <h1 className="text-md font-bold opacity-50">Hurry up ... ! Send Match Request Now ... !</h1>
                             <div className="flex gap-3">
-                                <button onClick={()=>
+                                <button onClick={async()=>
                                     {
-                                        dispatch(setPopOpen());
-                                        dispatch(setPostToProfileId(selected.memberId))
+                                        try{
+                                            await dispatch(setPopOpen());
+                                            await dispatch(setPostToProfileId(selected.memberId))
+                                        }
+                                        catch(err){
+                                            console.error("Error Sending Request");
+                                        }
+                                        
                                     }
                                 } className="text-tertiary bg-primary px-2 py-1 rounded-md">Request Match</button>
-                                <button onClick={()=>dispatch(postLikesByMemberId(selected.memberId))} className="border-2 border-primary text-primary px-2 py-1 rounded-md flex gap-2 items-center justify-center"><FaHeart size={20}/> Hit</button>
+                                <button onClick={()=>{
+                                    dispatch(postLikesByMemberId(selected.memberId))
+                                    Toastify.success("Added to Wishlist");
+                                    setTimeout(()=>{
+                                        navigate('/Like')
+                                    },1000)
+                                    }} className="border-2 border-primary text-primary px-2 py-1 rounded-md flex gap-2 items-center justify-center"><FaHeart size={20}/> Hit</button>
                             </div>
                         </div>
                 </div>
@@ -143,15 +166,23 @@ const Profile = () =>{
                     <h2 className="font-semibold opacity-60 text-sm sm:text-md md:text-lg">Age : {selected.age}</h2>
                     <h2 className="font-semibold opacity-60 text-sm sm:text-md md:text-lg">Native : {selected.native}</h2>
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col">
+                    <h1 className="text-xl mb-3 text-primary font-bold">Other Details</h1>
+                    <h2 className="font-semibold opacity-60 text-sm sm:text-md md:text-lg">Mother Tongue : {selected.motherTongue}</h2>
+                    <h2 className="font-semibold opacity-60 text-sm sm:text-md md:text-lg">Religion : {selected.religion}</h2>
+                    <h2 className="font-semibold opacity-60 text-sm sm:text-md md:text-lg">Caste : {selected.caste}</h2>
+                    <h2 className="font-semibold opacity-60 text-sm sm:text-md md:text-lg">Marital Status : {selected.maritalStatus}</h2>
+                    <h2 className="font-semibold opacity-60 text-sm sm:text-md md:text-lg">Disabilities : {selected.disabilities}</h2>
+                </div>
+                {/* <div className="flex flex-col gap-2">
                     <h1 className="text-xl text-primary font-bold mb-1">Hobbies</h1>
-                    {/* <p className="text-md opacity-50 mb-5">Described as</p> */}
+                    <p className="text-md opacity-50 mb-5">Described as</p>
                     {
                         selected.hobby?.map((elem)=>
                             <h2 className="font-bold opacity-60 px-2 py-1 shadow-sm shadow-offmode w-fit rounded-md text-xs sm:text-sm md:text-md">#{elem.hobbyName}</h2>
                         )
                     }
-                </div>
+                </div> */}
             </div>
 
             {/* Premium Layout (Credits) */}
@@ -191,7 +222,7 @@ const Profile = () =>{
                         <Map/>
                     </div>:
                     <div className="template flex items-center justify-center h-80 w-full rounded-md border-2 border-dotted border-primary">
-                        <button onClick={()=>dispatch(getPersonalInformationByMemberId(selected.memberId))} className="bg-primary text-mode px-4 py-2 rounded-md outline-none">Use Credits</button>
+                        <button onClick={()=>dispatch(getPersonalInformationByMemberId(selected.memberId))} className="bg-primary text-mode px-4 py-2 rounded-md outline-none">Use Credits / Matched</button>
                     </div>
                 }
             </div>

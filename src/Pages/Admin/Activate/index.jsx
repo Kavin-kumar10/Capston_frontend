@@ -6,6 +6,7 @@ import { SearchBarFilterAdmin } from "../../../Redux/AdminSlice";
 import { Link } from "react-router-dom";
 import { setSelected } from "../../../Redux/AdminSlice";
 import { DeactivateMember } from "../../../Redux/AdminSlice";
+import { dummy } from "../../../Assets";
 
 const Activate = () =>{
     const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const Activate = () =>{
     const Selected = useSelector(state=>state.Admin.Selected)
     const filtered = useSelector(state=>state.Admin.filtered)
     return(
-        <div className="Activate py-28 px-5 flex flex-col gap-10 sm:px-10 md:px-20 bg-tertiary">
+        <div className="Activate py-28 px-5 flex flex-col min-h-screen gap-10 sm:px-10 md:px-20 bg-tertiary">
             {
                 Selected.memberId?
                  <ActivatePop/> :<></>
@@ -38,10 +39,10 @@ const Activate = () =>{
                     return(
                         <div className="flex flex-col gap-5 p-5 shadow-md shadow-offmode bg-mode">
                             <div className="aspect-square">
-                                <img className="h-full w-full" src={elem.profilePic} alt="" />
+                                <img className="h-full w-full" src={elem.profilePic?elem.profilePic:dummy} alt="" />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <h1 className="text-lg font-semibold">{elem.personName}</h1>
+                                <h1 className="text-lg font-semibold">{elem.name}</h1>
                                 <div className="flex gap-2">
                                     {(elem.membership == 1)?
                                         <div className="px-2 py-1 bg-primary text-xs rounded-md w-fit text-mode">Premium</div>

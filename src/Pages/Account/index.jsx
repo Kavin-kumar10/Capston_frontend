@@ -7,33 +7,61 @@ import { useSelector,useDispatch } from "react-redux";
 import { valueupdate,setProfilePic } from "../../Redux/PicturesSlice";
 import { Tooltip } from 'react-tooltip'
 import { postMyPictures,updateProfilePic } from "../../Redux/PicturesSlice";
-import { getMyProfile, updateMyProfile } from "../../Redux/MemberSlice";
+import { getMyProfile, getPersonalInformationByMemberId, updateMyProfile } from "../../Redux/MemberSlice";
+import { updatePersonalData } from "../../Redux/MemberSlice";
 import Navbar from "../../Components/Navbar";
+import { postLocate } from "../../Redux/MemberSlice";
+import Toastify from "../../utils/Toastify";
 
 
 const Account= () =>{
-    useEffect(()=>{
-        window.scrollTo(0, 0);
-        dispatch(getMyProfile());
-    },[])
+    
+    //Selectors
     const uploadPictures = useSelector((state)=>state.Picture.UploadPictures)
     const myprofile = useSelector((state)=>state.Members.Profile)
     const personalDetail = useSelector((state)=>state.Members.mypersonaldetail)
     const selectedProfilePic = useSelector((state)=>state.Picture.profilePic)
-
+    const dispatch = useDispatch();
+    
+    useEffect(()=>{
+        window.scrollTo(0, 0);
+        dispatch(getMyProfile());
+        dispatch(getPersonalInformationByMemberId())
+    },[dispatch])
+    
+    //in page state management
     const [formdata,setFormData] = useState(myprofile);
-    console.log(formdata);
-    console.log("here");
+    const [formPersonalData,setFormPersonalData] = useState(personalDetail);
+    const [location,setLocation] = useState({
+        lat:0,
+        long:0,
+        personalDetailsId:0
+    })
+
+
+    //Handle Changes
     const handleChange =(e)=>{
         setFormData({...formdata,[e.target.name]:e.target.value})
         console.log(formdata);
     }
+    const handlePersonalChange = (e) =>{
+        setFormPersonalData({...formPersonalData,[e.target.name]:e.target.value})
+        console.log(formPersonalData);
+        console.log("Above this only");
+    }
 
-    console.log(personalDetail);
-    console.log("Above me");
+    const handleProfileUpdate = async(e)=>{
+        e.preventDefault();
+        try{
+            const actionresult = await dispatch(updateMyProfile(formdata));
+            Toastify.success("Updation Successfull");
+        }
+        catch(err){
+            console.error(err);
+        }
+    }
+
     const [isDisabled,setDisabled] = useState(true);
-    console.log(formdata);
-    const dispatch = useDispatch();
     return(
         <div className="Account flex flex-col w-screen py-28 px-5 sm:px-10 md:px-20 bg-[#F0F2F5] gap-10">
 
@@ -60,8 +88,9 @@ const Account= () =>{
                     <p className="text-md opacity-50">Profile Information requires re-verification</p>
                     <form className="flex flex-col">
                         <div className="grid grid-cols-1 gap-5 my-10">
-                            <input onChange={handleChange} name="personName" value={formdata.personName} disabled={isDisabled} type="text" className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode" />
+                            <input placeholder="Name" onChange={handleChange} name="personName" value={formdata.personName} disabled={isDisabled} type="text" className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode" />
                             <select onChange={handleChange} value={formdata.relation} disabled={isDisabled} name="relation" className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode" id="Relation">
+                                <option value="" selected>Select Relation</option>
                                 <option value="Brother">Brother</option>
                                 <option value="Relative">Relative</option>
                                 <option value="Myself">Myself</option>
@@ -70,17 +99,24 @@ const Account= () =>{
                                 <option value="Mother">Mother</option>
                                 <option value="Father">Father</option>
                             </select>
-                            <input name="email" onChange={handleChange} value={formdata.email} disabled={isDisabled} type="email" className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode"/>
+                            <input name="email" placeholder="Email" onChange={handleChange} value={formdata.email} disabled={isDisabled} type="email" className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode"/>
                         </div>
-                        <button className="btn-primary" type="submit">Update</button>
+                        <button onClick={handleProfileUpdate} className="btn-primary" type="submit">Update</button>
                     </form>
                 </div>
                 <div className="rounded-md w-full xs:w-2/5 bg-mode p-5 items-center justify-center flex flex-col">
                     <h1 className="text-xl font-bold mb-1">Profile Pic</h1>
                     <p className="text-md opacity-50">Make sure to have 1 : 1 ratio</p>
-                    <form onSubmit={(e)=>{
+                    <form onSubmit={async (e)=>{
                             e.preventDefault();
-                            dispatch(updateProfilePic(selectedProfilePic));
+                            try{
+                                const action = await dispatch(updateProfilePic(selectedProfilePic));
+                                Toastify.success("Profile update success");
+                                window.location.reload();
+                            }
+                            catch(err){
+                                console.error(err);
+                            }
                         }} className="flex items-center justify-center flex-col">
                         {
                             formdata.profilePic?
@@ -106,7 +142,7 @@ const Account= () =>{
                     e.preventDefault();
                 }}>
                     <textarea disabled={isDisabled} name="about" onChange={handleChange} value={formdata.about} type="text" className="h-20 w-full my-5 px-4 py-2 rounded-md outline-none border-2 border-offmode"/>
-                    <button className="btn-primary" type="submit">Update</button>
+                    <button onClick={handleProfileUpdate} className="btn-primary" type="submit">Update</button>
                 </form>
             </div>
 
@@ -114,11 +150,17 @@ const Account= () =>{
             <div className="rounded-md bg-mode p-5">
                 <h1 className="text-xl font-bold mb-1">Upload your images</h1>
                 <p className="text-md opacity-50">Allowed upto 5 images</p>
-                <form onSubmit={(e)=>{
+                <form onSubmit={async(e)=>{
                     e.preventDefault();
-                    dispatch(postMyPictures({id:personalDetail.personalDetailsId,pictures:uploadPictures}));
+                    try{
+                        await dispatch(postMyPictures({id:personalDetail.personalDetailsId,pictures:uploadPictures}));
+                        Toastify.success("Upload Success");
+                    }
+                    catch(err){
+                        console.error(err);
+                    }
                 }}>
-                    <div className="flex gap-5">
+                    <div className="flex flex-wrap gap-5">
                         {
                             personalDetail?.pictures?.map((elem)=>
                                 <img className="h-20 w-20 text-gray-500 bg-tertiary border-2 border-primary cursor-pointer rounded-md my-5 flex items-center justify-center" src={elem.pictureUrl} alt="" />
@@ -149,19 +191,39 @@ const Account= () =>{
                     </div>
                     <div className="flex flex-col gap-3">
                         <h1 className="basic-label">Religion</h1>
-                        <input type="text" onChange={handleChange} value={formdata.religion} placeholder="Religion" name="religion" disabled={isDisabled} className="basic-input" />
+                        <input list="Religion-list" onChange={handleChange} value={formdata.religion} placeholder="Religion" name="religion" disabled={isDisabled} className="basic-input" />
+                        <datalist id="Religion-list">
+                            <option value="" selected>Select Religion</option> 
+                            <option value="Hindu">Hindu</option>
+                            <option value="Muslim">Muslim</option>
+                            <option value="Christian">Christian</option>
+                            <option value="Sikhm">Sikhm</option> 
+                        </datalist>  
                     </div>
                     <div className="flex flex-col gap-3">
                         <h1 className="basic-label">Caste</h1>
-                        <input type="text" onChange={handleChange} value={formdata.caste} placeholder="Caste" name="caste" disabled={isDisabled} className="basic-input" />
+                        <input onChange={handleChange} value={formdata.caste} placeholder="Caste" name="caste" disabled={isDisabled} className="basic-input" />
                         </div>
                     <div className="flex flex-col gap-3">
                         <h1 className="basic-label">Marital Status</h1>
-                        <input type="text" onChange={handleChange} value={formdata.maritalStatus} placeholder="Marital Status" name="maritalStatus" disabled={isDisabled} className="basic-input" />
+                        <select onChange={handleChange} value={formdata.maritalStatus} placeholder="Marital Status" name="maritalStatus" disabled={isDisabled} className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode" id="martialStatus">
+                            <option value="Select" selected>Select Status</option>
+                            <option value="Never Married">Never Married</option>
+                            <option value="Widowed">Widowed</option>
+                            <option value="Divorsed">Divorsed</option> 
+                            <option value="Awaiting Divorse">Awaiting Divorse</option> 
+                        </select>  
                         </div>
                     <div className="flex flex-col gap-3">
                         <h1 className="basic-label">Mother Tongue</h1>
-                        <input type="text" onChange={handleChange} value={formdata.motherTongue} placeholder="Mother Tongue" name="motherTongue" disabled={isDisabled} className="basic-input" />
+                        <input list="motherTongue-options" onChange={handleChange} value={formdata.motherTongue} placeholder="Mother Tongue" name="motherTongue" disabled={isDisabled} className="basic-input" />
+                        <datalist id="motherTongue-options">
+                            <option value="English">English</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Tamil">Tamil</option>
+                            <option value="Telugu">Telugu</option> 
+                            <option value="Malayalam">Malayalam</option> 
+                        </datalist>  
                     </div>
                     <div className="flex flex-col gap-3">
                         <h1 className="basic-label">Height</h1>
@@ -169,17 +231,26 @@ const Account= () =>{
                     </div>
                     <div className="flex flex-col gap-3">
                         <h1 className="basic-label">Gender</h1>
-                        <select name="gender" onChange={handleChange} value={formdata.gender} disabled={isDisabled} className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode" id="Relation">
+                        <input
+                            list="gender-options"
+                            name="gender"
+                            value={formdata.gender}
+                            onChange={handleChange}
+                            disabled={isDisabled}
+                            placeholder="Gender"
+                            className="basic-input"
+                            // className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode"
+                            id="Gender"
+                        />
+                        <datalist id="gender-options">
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Others">Others</option>
-                        </select>                    
+                        </datalist>                    
                     </div>
 
                 </form>
-                <button onClick={()=>{
-                    dispatch(updateMyProfile(formdata));
-                }} className="btn-primary" >Update</button>
+                <button onClick={handleProfileUpdate} className="btn-primary" >Update</button>
 
             </div>
 
@@ -190,11 +261,12 @@ const Account= () =>{
                 <form className="grid grid-cols-2 md:grid-cols-3 gap-5 my-10">
                     <div className="flex flex-col gap-3">
                         <h1 className="basic-label">Mobile No</h1>
-                        <input type="number" onChange={handleChange} value={personalDetail.mobile} placeholder="Mobile" name="mobile" disabled={isDisabled} className="basic-input" />
+                        <input type="number" onChange={handlePersonalChange} value={formPersonalData.mobile} placeholder="Mobile" name="mobile" disabled={isDisabled} className="basic-input" />
                     </div>
                     <div className="flex flex-col gap-3">
                         <h1 className="basic-label">Education</h1>
-                        <select name="education" onChange={handleChange} value={personalDetail.education} disabled={isDisabled} className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode" id="education">
+                        <select name="education" onChange={handlePersonalChange} value={formPersonalData.education} disabled={isDisabled} className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode" id="education">
+                            <option value="" selected>Select</option>
                             <option value="Engineering Graduate">Engineering Graduate</option>
                             <option value="Higher Secondary">Higher Secondary</option>
                             <option value="Degree Graduate">Degree Graduate</option>
@@ -206,35 +278,85 @@ const Account= () =>{
                     </div>
                     <div className="flex flex-col gap-3">
                         <h1 className="basic-label">Annual Income</h1>
-                        <input type="text" onChange={handleChange} value={personalDetail.annualIncome} placeholder="Annual Income" name="annualIncome" disabled={isDisabled} className="basic-input" />
+                        <input type="text" onChange={handlePersonalChange} value={formPersonalData.annualIncome} placeholder="Annual Income" name="annualIncome" disabled={isDisabled} className="basic-input" />
                     </div>
                     <div className="flex flex-col gap-3">
                         <h1 className="basic-label">Profession</h1>
-                        <input type="text" onChange={handleChange} value={personalDetail.professionName} placeholder="Profession Name" name="professionName" disabled={isDisabled} className="basic-input" />
+                        <input type="text" onChange={handlePersonalChange} value={formPersonalData.professionName} placeholder="Profession Name" name="professionName" disabled={isDisabled} className="basic-input" />
                         </div>
                     <div className="flex flex-col gap-3">
                         <h1 className="basic-label">Family Status</h1>
-                        <input type="text" onChange={handleChange} value={personalDetail.familyStatus} placeholder="Family Status" name="familyStatus" disabled={isDisabled} className="basic-input" />
+                        <select name="familyStatus" onChange={handlePersonalChange} value={formPersonalData.familyStatus} disabled={isDisabled} className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode" id="familyStatus">
+                            <option selected value="">Select value</option>
+                            <option value="Middle Class">Middle Class</option>
+                            <option value="Upper Middle Class">Upper Middle Class</option>
+                            <option value="Affluent">Affluent</option>
+                            <option value="Rich">Rich</option>
+                        </select>  
                         </div>
                     <div className="flex flex-col gap-3">
                         <h1 className="basic-label">Family Value</h1>
-                        <input type="text" onChange={handleChange} value={personalDetail.familyValue} placeholder="Family Value" name="familyValue" disabled={isDisabled} className="basic-input" />
+                        <select name="familyValue" onChange={handlePersonalChange} value={formPersonalData.familyValue} disabled={isDisabled} className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode" id="familyValue">
+                            <option selected value="">Select value</option>
+                            <option value="Traditional">Traditional</option>
+                            <option value="Orthodox">Orthodox</option>
+                            <option value="Moderate">Moderate</option>
+                            <option value="Liberal">Liberal</option>
+                        </select>  
                     </div>
                     <div className="flex flex-col gap-3">
                         <h1 className="basic-label">Family Type</h1>
-                        <input type="text" onChange={handleChange} value={personalDetail.familyType} placeholder="Family Type" name="familyType" disabled={isDisabled} className="basic-input" />
+                        <select name="familyType" onChange={handlePersonalChange} value={formPersonalData.familyType} disabled={isDisabled} className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode" id="familyType">
+                            <option selected value="">Select type</option>
+                            <option value="Joint">Joint</option>
+                            <option value="Nuclear">Nuclear</option>
+                        </select>    
                     </div>
                     <div className="flex flex-col gap-3">
-                        <h1 className="basic-label">Gender</h1>
-                        <select name="location" onChange={handleChange} value={personalDetail.location} disabled={isDisabled} className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode" id="location">
+                        <h1 className="basic-label">Location</h1>
+                        <select name="location" onChange={(e)=>
+                            {
+                                if(e.target.value == "Allow"){
+                                    if (navigator.geolocation) {
+                                        navigator.geolocation.getCurrentPosition(
+                                          (position) => {
+                                            // Handle the position data here
+                                            console.log("Latitude:", position.coords.latitude);
+                                            console.log("Longitude:", position.coords.longitude);
+                                            // setLocation({
+                                                
+                                            // })
+                                            console.log(location);
+                                            setTimeout(()=>{
+                                                dispatch(postLocate({
+                                                    personalDetailsId : personalDetail.personalDetailsId,
+                                                    lat:position.coords.latitude,
+                                                    long:position.coords.longitude
+                                                }));
+                                            },1000)
+                                          },
+                                          (error) => {
+                                            // Handle errors here
+                                            console.error("Error getting location:", error.message);
+                                          }
+                                        );
+                                      } else {
+                                        console.error("Geolocation is not supported by this browser.");
+                                      }
+                                }
+                            }
+                        } disabled={isDisabled} className="px-4 py-2 rounded-md outline-none shadow-sm shadow-offmode" id="location">
+                            <option value="">Select Approval</option>
                             <option value="Allow">Allow</option>
                             <option value="Deny">Deny</option>
                         </select>                    
                     </div>
 
                 </form>
-                <button onClick={()=>{
-                    dispatch(updateMyProfile(formdata));
+                <button onClick={(e)=>{
+                    e.preventDefault();
+                    dispatch(updatePersonalData(formPersonalData));
+                    Toastify.success("Personal Detail Update Successful");
                 }} className="btn-primary" >Update</button>
 
             </div>

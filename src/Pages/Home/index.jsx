@@ -5,26 +5,30 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
 import Card from "../../Components/Card";
+import Loader from "../../Components/Loader";
 
 const Home = () =>{
     const Members = useSelector((state)=>state.Members.allMembers);
+    const loading = useSelector((state)=>state.Members.loading)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     useEffect(()=>{
         window.scrollTo(0, 0);
     },[])
     console.log(Members);
+
     return(
+        // loading?<Loader/>:
         <div className="Home flex flex-col">
             <Navbar/>
             <div className="flex bg-mild py-28 xl:py-0 px-5 sm:px-10 md:px-20 h-screen flex-col-reverse text-center md:text-right md:flex-row">
                 <div className="w-full h-full md:w-1/2 flex gap-5 justify-center items-center md:items-end flex-col ">
-                    <h1 className="text-4xl md:text-4xl lg:text-6xl font-bold bg-gradient-to-r from-black via-primary to-primary bg-clip-text text-transparent">Soul Finder</h1>
-                    <h3 className="text-lg md:text-2xl lg:text-4xl font-bold">Find Your <span className="text-primary">Perfect Partner</span></h3>
-                    <p className="text-sm md:text-lg  opacity-50">Your soulmate might be waiting for you here.</p>
+                    <h1 data-aos="fade-right" className="text-4xl md:text-4xl lg:text-6xl font-bold bg-gradient-to-r from-black via-primary to-primary bg-clip-text text-transparent">Soul Finder</h1>
+                    <h3 data-aos="fade-right" data-aos-delay="200" className="text-lg md:text-2xl lg:text-4xl font-bold">Find Your <span className="text-primary">Perfect Partner</span></h3>
+                    <p data-aos="fade-right" data-aos-delay="400" className="text-sm md:text-lg  opacity-50">Your soulmate might be waiting for you here.</p>
                 </div>
                 <div className="flex h-full w-full md:w-1/2 items-center justify-center">
-                    <img className="h-3/5 w-auto drop-shadow-2xl shadow-primary" src={home} alt="Marriage" />
+                    <img data-aos="zoom-in" className="h-3/5 w-auto drop-shadow-2xl shadow-primary" src={home} alt="Marriage" />
                 </div>
             </div>
             <div className="bg-tertiary p-5 sm:p-10 md:p-20 flex flex-col gap-10">
@@ -34,7 +38,7 @@ const Home = () =>{
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     {
-                        Members.map((elem)=>
+                        Members.filter((elem)=>elem.membership == 1).map((elem)=>
                             <Card elem={elem}/>
                         )
                     }

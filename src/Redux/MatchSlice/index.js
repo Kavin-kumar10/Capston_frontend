@@ -100,7 +100,7 @@ const MatchSlice = createSlice({
         state.MyAllMatches = {
               all : action.payload,
               Pending: action.payload.filter(
-                (match) => match.fromProfileId === memberId // Replace 2 with current user ID
+                (match) => match.fromProfileId === memberId && match.status !== "Matched"
               ),
               Matched: action.payload.filter(
                 (match) =>
