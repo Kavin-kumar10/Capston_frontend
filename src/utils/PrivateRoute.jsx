@@ -1,4 +1,4 @@
-import { Outlet,Navigate,useNavigate } from "react-router-dom";
+import { Outlet,Navigate } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
 import { setAuthenticated } from "../Redux/AuthSlice";
 import { Validator } from "../Redux/AuthSlice";

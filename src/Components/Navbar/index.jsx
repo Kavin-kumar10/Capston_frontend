@@ -1,19 +1,18 @@
 import React,{useState} from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { IoMdClose } from "react-icons/io";
-import { dummy } from "../../Assets";
-import { MdHomeFilled,MdOutlineSettings } from "react-icons/md";
-import { FaHeart,FaBars } from "react-icons/fa";
-import { IoMdSearch } from "react-icons/io";
-import { GrConnect } from "react-icons/gr";
-import { setNav } from "../../Redux/MemberSlice";
+import { FaBars } from "react-icons/fa";
+// import { dummy } from "../../Assets";
+// import { MdHomeFilled,MdOutlineSettings } from "react-icons/md";
+// import { IoMdSearch } from "react-icons/io";
+// import { GrConnect } from "react-icons/gr";
+// import { setNav } from "../../Redux/MemberSlice";
 
 
 const Navbar = () =>{
     const [open,setOpen] = useState(false);
     const [premium,setPremium] = useState(false);
-    const dispatch = useDispatch();
     const myprofile = useSelector((state)=>state.Members.Profile)
     return(
         <div className="Navbar w-screen fixed top-0 z-20 left-0 px-5 sm:px-10 lg:px-20 py-4 bg-mild flex justify-between items-center">
@@ -38,11 +37,11 @@ const Navbar = () =>{
 
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-offmode via-primary to-primary bg-clip-text text-transparent">Soul Finder</h1>
             <ul className="text-offmode items-center gap-3 sm:gap-4 md:gap-5 lg:gap-6 justify-between text-md font-semibold hidden md:flex">
-                <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname == "/"?"text-primary":""}`} to='/'>HOME</Link>
-                <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname=="/Search" == 1?"text-primary":""}`} to='/Search'>SEARCH</Link>
-                <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname == "/Matches"?"text-primary":""}`} to='/Matches'>MATCHES</Link>
-                <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname == "/Like"?"text-primary":""}`} to='/Like'>LIKED</Link>
-                <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname == "/Account"?"text-primary":""}`} to='/Account'>SETTINGS</Link>
+                <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname === "/"?"text-primary":""}`} to='/'>HOME</Link>
+                <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname==="/Search" === 1?"text-primary":""}`} to='/Search'>SEARCH</Link>
+                <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname === "/Matches"?"text-primary":""}`} to='/Matches'>MATCHES</Link>
+                <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname === "/Like"?"text-primary":""}`} to='/Like'>LIKED</Link>
+                <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname === "/Account"?"text-primary":""}`} to='/Account'>SETTINGS</Link>
                 {
                     myprofile.dailyLog?<div className="px-3 py-2 text-primary border-2 border-primary rounded-md flex items-center justify-center gap-5 font-bold">
                         Credits : {myprofile.dailyLog.creditsCount}

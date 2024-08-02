@@ -1,24 +1,24 @@
 import './App.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from 'react';
 import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getMembers, getMyPersonalDetails, getMyProfile } from './Redux/MemberSlice';
 import Home from './Pages/Home';
 import Account from './Pages/Account';
 import Login from './Pages/Auth/Login';
 import Register from './Pages/Auth/Register';
 import Profile from './Pages/Profile';
-import { getMatchesWithMemberId } from './Redux/MatchSlice';
 import Matches from './Pages/Matches';
 import Search from './Pages/Search';
 import LikeScreen from './Pages/LikeScreen';
 import PrivateRoutes from './utils/PrivateRoute';
 import { Validator } from './Redux/AuthSlice';
-import { getLikesByMemberId } from './Redux/LikeSlice';
 import Aos from 'aos';
 import Activate from './Pages/Admin/Activate';
+// import { getMatchesWithMemberId } from './Redux/MatchSlice';
+// import { getLikesByMemberId } from './Redux/LikeSlice';
 
 
 function App() {

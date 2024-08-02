@@ -1,5 +1,5 @@
-import React,{useState,useRef} from "react";
-import { MapContainer, TileLayer, useMap,Marker,Popup } from 'react-leaflet'
+import React from "react";
+import { MapContainer, TileLayer,Marker,Popup } from 'react-leaflet'
 import { useSelector } from "react-redux";
 import 'leaflet/dist/leaflet.css'
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
@@ -8,10 +8,10 @@ import {Icon} from 'leaflet'
 const Map = () =>{
 
     const selected = useSelector(state=>state.Members.Selected)
-    const [position,setPosition] = useState([selected.PersonalDetail.location.lat, selected.PersonalDetail.location.long]);
+    const position = [selected.PersonalDetail.location.lat, selected.PersonalDetail.location.long];
 
     // const [center,setCenter] = useState([PersonalDetail.location.lat, PersonalDetail.location.long]);
-    const MapRef = useRef(null);
+    // const MapRef = useRef(null);
     return(
         <div className="h-[70vh] w-full p-5 flex flex-col gap-5">
             <h1 className="text-primary text-xl md:text-2xl font-semibold">Location</h1>

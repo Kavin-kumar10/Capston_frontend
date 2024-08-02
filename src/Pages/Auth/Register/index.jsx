@@ -24,9 +24,8 @@ const Register = () =>{
         }
         if(isAuthenticated){
             navigate('/');
-            console.log("its working");
         }
-    },[])
+    },[dispatch,navigate,isAuthenticated])
 
     const handleNameChange = (e) =>{
         dispatch(setRegName(e.target.value)); // Dispatch action to update name
@@ -56,10 +55,16 @@ const Register = () =>{
             <div class="w-full sm:w-1/2 h-full p-5 flex flex-col items-center justify-center">
                 <h1 class="text-3xl text-secondary font-bold my-5">Register</h1>
                 <form onSubmit={(e)=>{
-                            e.preventDefault();
-                            dispatch(postRegisterRequest(Reg));
-                            navigate('/Login');
-                            handleReset()
+                    e.preventDefault();
+                            try{
+                                dispatch(postRegisterRequest(Reg));
+                                navigate('/Login');
+                                handleReset()
+                                Toastify.success("Registration Successfull");
+                            }
+                            catch(err){
+
+                            }
                         }} id="register" class="w-full gap-2 py-5 rounded-md flex items-center justify-center flex-col">
                         <div class="flex flex-col mb-3 w-full md:w-2/3 lg:w-1/2">
                             <div class="flex justify-between">

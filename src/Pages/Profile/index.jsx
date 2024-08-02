@@ -49,7 +49,7 @@ const Profile = () =>{
     },[dispatch,value.userid])
     console.log(selected);
 
-
+    
     return(
         <div className="w-screen  flex flex-col p-5 md:p-10 lg:p-20 gap-5 bg-tertiary">
 

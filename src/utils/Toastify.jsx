@@ -10,3 +10,4 @@ const Toastify = {
 };
 
 export default Toastify;
+

@@ -8,7 +8,7 @@ const Card = ({elem}) =>{
         <div className="relative">
             <img src={elem.profilePic} alt="" />
             <div className="absolute top-1 right-2 ">
-            {elem.membership == 1 ?<p className="text-sm font-extrabold text-primary bg-mode border-2 border-primary rounded-md px-1 py-1">Premium</p>:<p className="text-sm font-extrabold text-green-700 bg-mode border-2 border-green-700 rounded-md px-1 py-1">Free</p>}
+            {elem.membership === 1 ?<p className="text-sm font-extrabold text-primary bg-mode border-2 border-primary rounded-md px-1 py-1">Premium</p>:<p className="text-sm font-extrabold text-green-700 bg-mode border-2 border-green-700 rounded-md px-1 py-1">Free</p>}
                 
             </div>
         </div>

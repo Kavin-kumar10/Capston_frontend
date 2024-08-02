@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector,useDispatch } from "react-redux";
-import { setSelected,setMemberId,setPlan,setRole } from "../../../Redux/AdminSlice";
+import { setSelected,setPlan,setRole } from "../../../Redux/AdminSlice";
 import { ActivateMember } from "../../../Redux/AdminSlice";
 
 const ActivatePop = () =>{
@@ -12,7 +12,6 @@ const ActivatePop = () =>{
         <div class="bg-white p-5 w-full m-1 sm:w-1/2 lg:w-1/3 rounded-md shadow-sm shadow-secondary">
             <h1 class="text-primary opacity-80 text-xl md:text-3xl font-bold my-3">Activate Account</h1>
             <p class="mb-3 text-lg text-secondary opacity-60">Member Id : {Selected.memberId}</p>
-
             <div class="w-full mb-3">
                 <select onChange={(e)=>dispatch(setRole(e.target.value))} name="Role" class=" w-full px-3 py-2 text-base text-gray-700 rounded-md border border-gray-300 focus:outline-none">
                     <option value="" selected>Select an option</option>

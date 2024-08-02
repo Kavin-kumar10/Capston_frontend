@@ -5,7 +5,6 @@ import { useSelector,useDispatch } from "react-redux";
 import { logo } from "../../../Assets";
 import { Link } from "react-router-dom";
 import { postLoginRequest } from "../../../Redux/AuthSlice";
-import { Validator } from "../../../Redux/AuthSlice";
 import { setLogEmail, setLogPassword } from "../../../Redux/AuthSlice";
 import Toastify from "../../../utils/Toastify";
 import { useNavigate } from "react-router-dom";
@@ -25,7 +24,7 @@ const Login = () =>{
             navigate('/');
         }
         
-    },[])
+    },[isAuthenticated,navigate])
     
     const handleEmailChange = (e) => {
         dispatch(setLogEmail(e.target.value)); // Dispatch action to update email
@@ -60,7 +59,7 @@ const Login = () =>{
                         } else {
                             Toastify.error(resultAction.error.message);
                             console.error('Operation failed:', resultAction.error.message);
-                            if(resultAction.error.message == "User is disabled"){
+                            if(resultAction.error.message === "User is disabled"){
                                 Toastify.info("Get verified call : 9876543214");
                             }
                             // Handle errors

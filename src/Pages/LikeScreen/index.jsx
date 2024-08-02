@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import Navbar from "../../Components/Navbar";
-import Card from "../../Components/Card";
 import { useSelector,useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { deleteLikeByLikeId,getLikesByMemberId } from "../../Redux/LikeSlice";
 import Toastify from "../../utils/Toastify";
+// import Card from "../../Components/Card";
 
 const LikeScreen = () =>{
     const LikedProfiles = useSelector(state=>state.Like.Liked);
@@ -26,7 +26,7 @@ const LikeScreen = () =>{
                             <div className="relative">
                                 <img src={elem.liked.profilePic} alt="" />
                                 <div className="absolute top-1 right-2 ">
-                                {elem.liked.membership == 1 ?<p className="text-sm font-extrabold text-primary bg-mode border-2 border-primary rounded-md px-1 py-1">Premium</p>:<p className="text-sm font-extrabold text-green-700 bg-mode border-2 border-green-700 rounded-md px-1 py-1">Free</p>}
+                                {elem.liked.membership === 1 ?<p className="text-sm font-extrabold text-primary bg-mode border-2 border-primary rounded-md px-1 py-1">Premium</p>:<p className="text-sm font-extrabold text-green-700 bg-mode border-2 border-green-700 rounded-md px-1 py-1">Free</p>}
                                     
                                 </div>
                             </div>

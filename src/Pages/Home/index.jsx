@@ -1,17 +1,14 @@
 import React,{useEffect} from "react";
 import { history, home } from "../../Assets";
-import { useSelector,useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Navbar from "../../Components/Navbar";
 import Card from "../../Components/Card";
-import Loader from "../../Components/Loader";
+// import { Link } from "react-router-dom";
+// import Loader from "../../Components/Loader";
 
 const Home = () =>{
     const Members = useSelector((state)=>state.Members.allMembers);
-    const loading = useSelector((state)=>state.Members.loading)
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+
     useEffect(()=>{
         window.scrollTo(0, 0);
     },[])
@@ -38,7 +35,7 @@ const Home = () =>{
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     {
-                        Members.filter((elem)=>elem.membership == 1).map((elem)=>
+                        Members.filter((elem)=>elem.membership === 1).map((elem)=>
                             <Card elem={elem}/>
                         )
                     }
