@@ -68,5 +68,5 @@ jobs:
           app-name: 'Matrimonycapstone'
           slot-name: 'Production'
           package: .
-          start-up-command: 'npm start'  # This is the new line
+          startup-command: 'npm start'  # This is the new line
           
