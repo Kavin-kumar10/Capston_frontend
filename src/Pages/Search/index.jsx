@@ -2,7 +2,7 @@ import React,{useEffect, useState} from "react";
 import Navbar from "../../Components/Navbar";
 import Card from "../../Components/Card"
 import { useSelector,useDispatch } from "react-redux";
-import { MdFilterAlt, MdFilterAltOff  } from "react-icons/md";
+import { MdFilterAlt  } from "react-icons/md";
 import { handlePop,SearchBarFilter } from "../../Redux/MemberSlice";
 import { setChangesToFiltered } from "../../Redux/MemberSlice";
 import { setFilteredToAll } from "../../Redux/MemberSlice";
