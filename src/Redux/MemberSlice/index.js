@@ -113,8 +113,8 @@ export const getPersonalInformationByMemberId = createAsyncThunk('gets/getsPerso
         });
         return response.data;
       } catch (error) {
-        console.error('Error fetching personal information:', error);
-        throw error;
+        console.error('Error fetching personal information:', error?.response?.data?.message);
+        throw error?.response?.data?.message;
       }
 })
 
@@ -127,19 +127,13 @@ const MemberSlice = createSlice({
         Profile:{},
         mypersonaldetail:{},
         Selected:{},
-        loading:[],
+        loading:false,
         Search:{
             SearchPop:false,
             filtered:[]
         },
-
-        //Additional
-        Navselect:null
     },
     reducers:{
-        setNav:(state,action)=>{
-          state.Navselect = action.payload;
-        },
         setFilteredToAll:(state,action)=>{
           state.Search.filtered = state.allMembers;
         },
@@ -160,7 +154,7 @@ const MemberSlice = createSlice({
           console.log(action.payload);
         },
         handlePop:(state,action)=>{
-            if(action.payload == 'open') state.Search.SearchPop = true;
+            if(action.payload === 'open') state.Search.SearchPop = true;
             else state.Search.SearchPop = false;
         },
         SearchBarFilter:(state,action)=>{
@@ -183,32 +177,76 @@ const MemberSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        // Add reducers for additional action types here, and handle loading state as needed
+
+
         builder.addCase(getMembers.fulfilled, (state, action) => {
-          // Add user to the state array
-          state.allMembers = action.payload.filter((elem)=>elem.role == 0);
-          state.Search.filtered = action.payload.filter((elem)=>elem.role == 0);
+          state.allMembers = action.payload.filter((elem)=>elem.role === 0);
+          state.Search.filtered = action.payload.filter((elem)=>elem.role === 0);
         })
+        .addCase(getMembers.pending,(state,action)=>{
+          state.loading = true;
+        })
+        .addCase(getMembers.rejected,(state,action)=>{
+          console.error("Error fetching information");
+          state.loading = false;  
+        })
+
+
+
         builder.addCase(getMyProfile.fulfilled,(state,action)=>{
+            state.loading = false;
             state.Profile = action.payload;
-            state.allMembers = state.allMembers.filter((members)=>members.memberId != state.Profile.memberId);
-            state.Search.filtered = state.Search.filtered.filter((members)=>members.memberId != state.Profile.memberId);
+            state.allMembers = state.allMembers.filter((members)=>members.memberId !== state.Profile.memberId);
+            state.Search.filtered = state.Search.filtered.filter((members)=>members.memberId !== state.Profile.memberId);
         })
+        .addCase(getMyProfile.pending,(state,action)=>{
+          state.loading = true;
+        })
+        .addCase(getMyProfile.rejected,(state,action)=>{
+          state.loading = false;  
+        })
+
+
+
         builder.addCase(getMemberById.fulfilled,(state,action)=>{
             state.Selected = action.payload;
+            state.loading = false;
         })
+        .addCase(getMemberById.pending,(state,action)=>{
+          state.loading = true;
+        })
+        .addCase(getMemberById.rejected,(state,action)=>{
+          state.loading = false;  
+        })
+
+
         builder.addCase(getMyPersonalDetails.fulfilled,(state,action)=>{
             state.Profile = {...state.Profile,PersonalDetails:action.payload};
             state.mypersonaldetail = action.payload;
+            state.loading = false;
         })
-        builder.addCase(getPersonalInformationByMemberId.fulfilled,(state,action)=>{
-            state.Selected = {...state.Selected,PersonalDetail:action.payload}
-            // if (state.Profile && state.Profile.dailyLog && state.Profile.dailyLog.creditsCount !== undefined) {
-            //   if(state.Profile.dailyLog.creditsCount >0)
-            //     state.Profile.dailyLog.creditsCount -= 1;
-            //   }        
+        .addCase(getMyPersonalDetails.pending,(state,action)=>{
+          state.loading = true;
+        })
+        .addCase(getMyPersonalDetails.rejected,(state,action)=>{
+          console.error("Error fetching information");
+          state.loading = false;  
+        })
+
+
+        builder
+          .addCase(getPersonalInformationByMemberId.fulfilled,(state,action)=>{
+              state.Selected = {...state.Selected,PersonalDetail:action.payload}   
+              state.loading = false;  
             }
           )
+          .addCase(getPersonalInformationByMemberId.pending,(state,action)=>{
+            state.loading = true;
+          })
+          .addCase(getPersonalInformationByMemberId.rejected,(state,action)=>{
+            console.error("Error fetching information");
+            state.loading = false;  
+          })
       },
 })
 

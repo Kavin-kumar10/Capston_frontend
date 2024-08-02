@@ -1,5 +1,5 @@
-import React, { useEffect,useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {  useParams } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +16,7 @@ import { setPopClose,setPopOpen } from "../../Redux/MatchSlice";
 import { setPostMessage,setPostToProfileId } from "../../Redux/MatchSlice";
 
 //Async Functions
-import { getMemberById } from "../../Redux/MemberSlice";
+import { getMemberById, getMyProfile } from "../../Redux/MemberSlice";
 import { getPersonalInformationByMemberId } from "../../Redux/MemberSlice";
 import { postLikesByMemberId } from "../../Redux/LikeSlice";
 import { postNewMatch } from "../../Redux/MatchSlice";
@@ -46,7 +46,7 @@ const Profile = () =>{
     useEffect(()=>{
         window.scrollTo(0, 0);
         dispatch(getMemberById(value.userid))
-    },[])
+    },[dispatch,value.userid])
     console.log(selected);
 
 
@@ -85,7 +85,7 @@ const Profile = () =>{
                             <button onClick={()=>dispatch(setPopClose())} id="cancel" class="rounded-md bg-tertiary text-offmode border-2 border-tertiary md:px-4 md:py-1 px-2 py-1">Cancel</button>
                             <button onClick={async ()=>{
                                     try{
-                                        const requestingAction = await dispatch(postNewMatch(postmatch))
+                                        await dispatch(postNewMatch(postmatch))
                                         Toastify.success("Request Sent Successfull");
                                         dispatch(setPopClose())
                                     }
@@ -107,7 +107,7 @@ const Profile = () =>{
                     <p className="hover:underline hidden sm:block">Back to home page</p>
                 </div>
                 {
-                    myprofile.membership == 1 && myprofile.dailyLog ?
+                    myprofile.membership === 1 && myprofile.dailyLog ?
                     <p className="back font-bold opacity-50 flex items-center justify-start"> Credits Remain : {myprofile.dailyLog.creditsCount}</p>:<></>
                 }
             </div>
@@ -123,7 +123,7 @@ const Profile = () =>{
                     {/* <p className="text-lg sm:text-xl md:text-2xl font-bold opacity-70">{selected.gender} - {selected.age} years old</p> */}
                     <div className="flex gap-2">
                         {selected.isVerified ?<div className="text-[#4398EF] px-2 py-1 text-sm rounded-md border-2 border-[#4398EF]">Verified</div>:<></>}
-                        {selected.membership == 1 ?<div className="border-2 border-primary px-2 py-1 text-sm rounded-md text-primary">Premium</div>:<div className="border-2 border-green-600 px-2 py-1 text-sm rounded-md text-green-600">Free</div>}
+                        {selected.membership === 1 ?<div className="border-2 border-primary px-2 py-1 text-sm rounded-md text-primary">Premium</div>:<div className="border-2 border-green-600 px-2 py-1 text-sm rounded-md text-green-600">Free</div>}
                     </div>
                     <div className="flex flex-col gap-4 items-start">
                         <h1 className="text-md font-bold opacity-50">Hurry up ... ! Send Match Request Now ... !</h1>
@@ -219,10 +219,23 @@ const Profile = () =>{
                                 <h2 className="font-bold opacity-60 text-sm sm:text-md md:text-lg">Family Value : {selected.PersonalDetail.familyValue}</h2>
                             </div>
                         </div>
-                        <Map/>
+                        <Map />
                     </div>:
                     <div className="template flex items-center justify-center h-80 w-full rounded-md border-2 border-dotted border-primary">
-                        <button onClick={()=>dispatch(getPersonalInformationByMemberId(selected.memberId))} className="bg-primary text-mode px-4 py-2 rounded-md outline-none">Use Credits / Matched</button>
+                        <button onClick={async ()=>{
+                            try{
+                                const actiongetperonal = await dispatch(getPersonalInformationByMemberId(selected.memberId));
+                                await dispatch(getMyProfile())
+                                if (getPersonalInformationByMemberId.fulfilled.match(actiongetperonal)) {
+                                    Toastify.success("Personal Data retriving success, Please wait...")
+                                } else {
+                                    Toastify.error(actiongetperonal.error.message);
+                                    console.error('Operation failed:', actiongetperonal.error.message);
+                                }
+                            }catch(err){
+                                console.log("It is hit");
+                            }
+                            }} className="bg-primary text-mode px-4 py-2 rounded-md outline-none">Use Credits / Matched</button>
                     </div>
                 }
             </div>

@@ -8,7 +8,7 @@ import {Icon} from 'leaflet'
 const Map = () =>{
 
     const selected = useSelector(state=>state.Members.Selected)
-    const [position,setPosition] = useState([10.0320776, 77.4816581]);
+    const [position,setPosition] = useState([selected.PersonalDetail.location.lat, selected.PersonalDetail.location.long]);
 
     // const [center,setCenter] = useState([PersonalDetail.location.lat, PersonalDetail.location.long]);
     const MapRef = useRef(null);

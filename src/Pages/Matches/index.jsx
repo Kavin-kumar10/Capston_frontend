@@ -3,7 +3,7 @@ import { useSelector,useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
 import { getMatchesWithMemberId, updateExistingMatch } from "../../Redux/MatchSlice";
-import { setDecision,setMatch } from "../../Redux/MatchSlice";
+// import { setDecision,setMatch } from "../../Redux/MatchSlice";
 
 const Matches = () =>{
     const AllMatch = useSelector(state => state.Match.MyAllMatches);
@@ -18,14 +18,14 @@ const Matches = () =>{
             <Navbar/>
                 <h1 className="text-primary text-2xl sm:text-3xl font-bold">Matches</h1>
                 <ul className="flex gap-2">
-                    <li onClick={()=>setRequired(AllMatch.Requests)} className={`cursor-pointer px-2 py-1 rounded ${((required == AllMatch.Requests)?"bg-primary text-tertiary":"bg-gray-200 text-gray-800")}   font-semibold`}>Requests</li>
-                    <li onClick={()=>setRequired(AllMatch.Pending)} className={`cursor-pointer px-2 py-1 rounded ${((required == AllMatch.Pending)?"bg-primary text-tertiary":"bg-gray-200 text-gray-800")}   font-semibold`}>Pending</li>
-                    <li onClick={()=>setRequired(AllMatch.Matched)} className={`cursor-pointer px-2 py-1 rounded ${((required == AllMatch.Matched)?"bg-primary text-tertiary":"bg-gray-200 text-gray-800")}  font-semibold`}>Matched</li>
+                    <li onClick={()=>setRequired(AllMatch.Requests)} className={`cursor-pointer px-2 py-1 rounded ${((required === AllMatch.Requests)?"bg-primary text-tertiary":"bg-gray-200 text-gray-800")}   font-semibold`}>Requests</li>
+                    <li onClick={()=>setRequired(AllMatch.Pending)} className={`cursor-pointer px-2 py-1 rounded ${((required === AllMatch.Pending)?"bg-primary text-tertiary":"bg-gray-200 text-gray-800")}   font-semibold`}>Pending</li>
+                    <li onClick={()=>setRequired(AllMatch.Matched)} className={`cursor-pointer px-2 py-1 rounded ${((required === AllMatch.Matched)?"bg-primary text-tertiary":"bg-gray-200 text-gray-800")}  font-semibold`}>Matched</li>
                 </ul>
                 <div className="w-full h-0.5 bg-gray-400"></div>
                     {
                         // All Request to myprofile
-                        (required == AllMatch.Requests)?
+                        (required === AllMatch.Requests)?
                         <div className="grid gap-5 md:grid-cols-3 lg:grid-cols-2">
                         {
                             required?.map((elem)=>
@@ -34,7 +34,7 @@ const Matches = () =>{
                                         <div className="relative">
                                             <img src={elem.fromProfile.profilePic} alt="" />
                                             <div className="absolute top-1 right-2 ">
-                                            {elem.fromProfile.membership == 1 ?<p className="text-sm font-extrabold text-primary bg-mode border-2 border-primary rounded-md px-1 py-1">Premium</p>:<p className="text-sm font-extrabold text-green-700 bg-mode border-2 border-green-700 rounded-md px-1 py-1">Free</p>}
+                                            {elem.fromProfile.membership === 1 ?<p className="text-sm font-extrabold text-primary bg-mode border-2 border-primary rounded-md px-1 py-1">Premium</p>:<p className="text-sm font-extrabold text-green-700 bg-mode border-2 border-green-700 rounded-md px-1 py-1">Free</p>}
                                             </div>
                                         </div>
                                     </div>
@@ -48,10 +48,26 @@ const Matches = () =>{
                                                 <h1 className="text-primary text-lg font-semibold opacity-80">Message:</h1>
                                                 <p className="text-md font-semibold opacity-60">{elem.message}</p>
                                             </div>
-                                            <Link to={`/Profile/${elem.toProfile.memberId}`} className="w-full flex items-center justify-center bg-primary text-tertiary rounded-md py-2 px-5" >View Profile</Link>
+                                            <Link to={`/Profile/${elem.fromProfile.memberId}`} className="w-full flex items-center justify-center bg-primary text-tertiary rounded-md py-2 px-5" >View Profile</Link>
                                             <div className="flex items-center justify-center w-full gap-5">
-                                                <button onClick={()=>dispatch(updateExistingMatch({decision:"Rejected",match:elem}))} className="bg-mode w-full font-semibold shadow-sm shadow-gray-500 px-3 py-1 rounded-md">Reject</button>
-                                                <button onClick={()=>dispatch(updateExistingMatch({decision:"Matched",match:elem}))} className="bg-gray-500 w-full font-semibold text-mode px-3 py-1 rounded-md">Accept</button>
+                                                <button onClick={async()=>{
+                                                    try{
+                                                        await dispatch(updateExistingMatch({decision:"Rejected",match:elem}))
+                                                        await dispatch(getMatchesWithMemberId());
+                                                    }catch(err){
+                                                        console.log(err); 
+                                                    }
+                                                    }} className="bg-mode w-full font-semibold shadow-sm shadow-gray-500 px-3 py-1 rounded-md">Reject</button>
+                                                <button onClick={async ()=>{
+                                                    try{
+                                                        await dispatch(updateExistingMatch({decision:"Matched",match:elem}))
+                                                        await dispatch(getMatchesWithMemberId());
+                                                    }
+                                                    catch(err){
+                                                        console.log(err);
+                                                        
+                                                    }
+                                                    }} className="bg-gray-500 w-full font-semibold text-mode px-3 py-1 rounded-md">Accept</button>
                                             </div>
                                         </div>
                                     </div>
@@ -60,7 +76,7 @@ const Matches = () =>{
                         }</div>:<></>
                     }
                     {       
-                        (required == AllMatch.Pending)?
+                        (required === AllMatch.Pending)?
                         <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                         {
                         required?.map((elem)=>
@@ -68,7 +84,7 @@ const Matches = () =>{
                                 <div className="relative">
                                     <img src={elem.toProfile.profilePic} alt="" />
                                     <div className="absolute top-1 right-2 ">
-                                    {elem.toProfile.membership == 1 ?<p className="text-sm font-extrabold text-primary bg-mode border-2 border-primary rounded-md px-1 py-1">Premium</p>:<p className="text-sm font-extrabold text-green-700 bg-mode border-2 border-green-700 rounded-md px-1 py-1">Free</p>}
+                                    {elem.toProfile.membership === 1 ?<p className="text-sm font-extrabold text-primary bg-mode border-2 border-primary rounded-md px-1 py-1">Premium</p>:<p className="text-sm font-extrabold text-green-700 bg-mode border-2 border-green-700 rounded-md px-1 py-1">Free</p>}
                                     </div>
                                 </div>
                                 <div className="flex flex-col">
@@ -79,7 +95,7 @@ const Matches = () =>{
                         )}</div>:<></>
                     }
                     {
-                        (required == AllMatch.Matched)?
+                        (required === AllMatch.Matched)?
                             <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                             {
                             required?.map((elem) => {
@@ -91,17 +107,17 @@ const Matches = () =>{
                                 <div className="relative">
                                     <img src={profileToDisplay.profilePic} alt="" />
                                     <div className="absolute top-1 right-2 ">
-                                    {profileToDisplay.membership == 1 ?<p className="text-sm font-extrabold text-primary bg-mode border-2 border-primary rounded-md px-1 py-1">Premium</p>:<p className="text-sm font-extrabold text-green-700 bg-mode border-2 border-green-700 rounded-md px-1 py-1">Free</p>}
+                                    {profileToDisplay.membership === 1 ?<p className="text-sm font-extrabold text-primary bg-mode border-2 border-primary rounded-md px-1 py-1">Premium</p>:<p className="text-sm font-extrabold text-green-700 bg-mode border-2 border-green-700 rounded-md px-1 py-1">Free</p>}
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <h1 className="font-bold text-xl">{profileToDisplay.personName}</h1>
                                     <p className="text-md opacity-50">{profileToDisplay.religion}</p>
-                                    <h1 className="text-green-700 font-semibold">Info : Now you can see personal details without Credits.</h1>
+                                    <h1 className="text-green-700 font-semibold">Info : Now you can see personal details without Credits</h1>
                                 </div>
                             </Link>)
                         }
-                        )}:</div>:<></>
+                        )}</div>:<></>
                     }
         </div>
     )

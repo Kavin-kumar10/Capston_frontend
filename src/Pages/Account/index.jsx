@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { MdEdit } from "react-icons/md";
 import { FaSquarePlus,FaCamera } from "react-icons/fa6";
-import { pic } from "../../Assets";
 import { useSelector,useDispatch } from "react-redux";
 import { valueupdate,setProfilePic } from "../../Redux/PicturesSlice";
 import { Tooltip } from 'react-tooltip'
@@ -12,6 +10,7 @@ import { updatePersonalData } from "../../Redux/MemberSlice";
 import Navbar from "../../Components/Navbar";
 import { postLocate } from "../../Redux/MemberSlice";
 import Toastify from "../../utils/Toastify";
+// import { pic } from "../../Assets";
 
 
 const Account= () =>{
@@ -24,19 +23,27 @@ const Account= () =>{
     const dispatch = useDispatch();
     
     useEffect(()=>{
-        window.scrollTo(0, 0);
-        dispatch(getMyProfile());
-        dispatch(getPersonalInformationByMemberId())
+        const dispatchFunctions = async () =>{
+            try{
+                dispatch(getMyProfile());
+                dispatch(getPersonalInformationByMemberId())
+                window.scrollTo(0, 0);
+            }
+            catch(err){
+                console.error(err);
+            }
+        }
+        dispatchFunctions();
     },[dispatch])
     
     //in page state management
     const [formdata,setFormData] = useState(myprofile);
     const [formPersonalData,setFormPersonalData] = useState(personalDetail);
-    const [location,setLocation] = useState({
-        lat:0,
-        long:0,
-        personalDetailsId:0
-    })
+    // const [location,setLocation] = useState({
+    //     lat:0,
+    //     long:0,
+    //     personalDetailsId:0
+    // })
 
 
     //Handle Changes
@@ -53,7 +60,7 @@ const Account= () =>{
     const handleProfileUpdate = async(e)=>{
         e.preventDefault();
         try{
-            const actionresult = await dispatch(updateMyProfile(formdata));
+            await dispatch(updateMyProfile(formdata));
             Toastify.success("Updation Successfull");
         }
         catch(err){
@@ -110,7 +117,7 @@ const Account= () =>{
                     <form onSubmit={async (e)=>{
                             e.preventDefault();
                             try{
-                                const action = await dispatch(updateProfilePic(selectedProfilePic));
+                                await dispatch(updateProfilePic(selectedProfilePic));
                                 Toastify.success("Profile update success");
                                 window.location.reload();
                             }
@@ -316,7 +323,7 @@ const Account= () =>{
                         <h1 className="basic-label">Location</h1>
                         <select name="location" onChange={(e)=>
                             {
-                                if(e.target.value == "Allow"){
+                                if(e.target.value === "Allow"){
                                     if (navigator.geolocation) {
                                         navigator.geolocation.getCurrentPosition(
                                           (position) => {
@@ -326,7 +333,6 @@ const Account= () =>{
                                             // setLocation({
                                                 
                                             // })
-                                            console.log(location);
                                             setTimeout(()=>{
                                                 dispatch(postLocate({
                                                     personalDetailsId : personalDetail.personalDetailsId,
@@ -353,10 +359,15 @@ const Account= () =>{
                     </div>
 
                 </form>
-                <button onClick={(e)=>{
+                <button onClick={async (e)=>{
                     e.preventDefault();
-                    dispatch(updatePersonalData(formPersonalData));
-                    Toastify.success("Personal Detail Update Successful");
+                    try{
+                        await dispatch(updatePersonalData(formPersonalData));
+                        Toastify.success("Personal Detail Update Successful");
+                    }
+                    catch(err){
+                        console.error(err);
+                    }
                 }} className="btn-primary" >Update</button>
 
             </div>

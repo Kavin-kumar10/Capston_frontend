@@ -14,7 +14,6 @@ const Navbar = () =>{
     const [open,setOpen] = useState(false);
     const [premium,setPremium] = useState(false);
     const dispatch = useDispatch();
-    const curr = useSelector(state=>state.Members.Navselect);
     const myprofile = useSelector((state)=>state.Members.Profile)
     return(
         <div className="Navbar w-screen fixed top-0 z-20 left-0 px-5 sm:px-10 lg:px-20 py-4 bg-mild flex justify-between items-center">
@@ -39,11 +38,11 @@ const Navbar = () =>{
 
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-offmode via-primary to-primary bg-clip-text text-transparent">Soul Finder</h1>
             <ul className="text-offmode items-center gap-3 sm:gap-4 md:gap-5 lg:gap-6 justify-between text-md font-semibold hidden md:flex">
-                <Link onClick={()=>dispatch(setNav(0))} className={`opacity-65 hover:opacity-100 cursor-pointer ${curr == 0?"text-primary":""}`} to='/'>HOME</Link>
-                <Link onClick={()=>dispatch(setNav(1))} className={`opacity-65 hover:opacity-100 cursor-pointer ${curr == 1?"text-primary":""}`} to='/Search'>SEARCH</Link>
-                <Link onClick={()=>dispatch(setNav(2))} className={`opacity-65 hover:opacity-100 cursor-pointer ${curr == 2?"text-primary":""}`} to='/Matches'>MATCHES</Link>
-                <Link onClick={()=>dispatch(setNav(3))} className={`opacity-65 hover:opacity-100 cursor-pointer ${curr == 3?"text-primary":""}`} to='/Like'>LIKED</Link>
-                <Link onClick={()=>dispatch(setNav(4))} className={`opacity-65 hover:opacity-100 cursor-pointer ${curr == 4?"text-primary":""}`} to='/Account'>SETTINGS</Link>
+                <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname == "/"?"text-primary":""}`} to='/'>HOME</Link>
+                <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname=="/Search" == 1?"text-primary":""}`} to='/Search'>SEARCH</Link>
+                <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname == "/Matches"?"text-primary":""}`} to='/Matches'>MATCHES</Link>
+                <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname == "/Like"?"text-primary":""}`} to='/Like'>LIKED</Link>
+                <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname == "/Account"?"text-primary":""}`} to='/Account'>SETTINGS</Link>
                 {
                     myprofile.dailyLog?<div className="px-3 py-2 text-primary border-2 border-primary rounded-md flex items-center justify-center gap-5 font-bold">
                         Credits : {myprofile.dailyLog.creditsCount}
