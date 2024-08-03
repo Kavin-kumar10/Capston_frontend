@@ -44,7 +44,7 @@ console.log(token);
         <Routes>
           <Route path='/Login' element={<Login/>}/>
           <Route path='/Register' element={<Register/>}/>
-          {/* <Route element={<PrivateRoutes/>}> */}
+          <Route element={<PrivateRoutes/>}>
             <Route path='/' element={<Home/>}/>
             <Route path='/Profile/:userid' element={<Profile/>}/>
             <Route path='/Account' element={<Account/>}/>
@@ -52,7 +52,7 @@ console.log(token);
             <Route path='/Search' element={<Search/>}/>
             <Route path='/Like' element={<LikeScreen/>}/>
             <Route path='/Admin/Activate' element={<Activate/>}/>
-          {/* </Route> */}
+          </Route>
         </Routes>
       </div>
     </Router>

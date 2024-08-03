@@ -50,7 +50,7 @@ const Profile = () =>{
     console.log(value.userid);
     useEffect(()=>{
         dispatch(setRequestStatus({allmatches,selected}))
-    },[selected])
+    },[selected,dispatch,allmatches])
     useEffect(()=>{
         const asyncfunction  = async()=>{
             try{
@@ -148,7 +148,7 @@ const Profile = () =>{
                         <h1 className="text-md font-bold opacity-50">Hurry up ... ! Send Match Request Now ... !</h1>
                             <div className="flex gap-3">
                                 {
-                                    (requeststatus == "")?
+                                    (requeststatus === "")?
                                         <button onClick={async()=>
                                             {
                                                 try{
@@ -161,9 +161,9 @@ const Profile = () =>{
                                                 
                                             }
                                         } className="felx items-center justify-center text-tertiary bg-primary px-2 py-1 rounded-md">Request Match</button>
-                                    :(requeststatus == "Pending")?
+                                    :(requeststatus === "Pending")?
                                     <div className="flex items-center justify-center text-tertiary bg-gray-500 px-2 py-1 rounded-md">Pending</div>
-                                    :(requeststatus == "Matched")?<div className="text-tertiary flex items-center justify-center bg-green-700 px-2 py-1 rounded-md">Matched</div>:<></>
+                                    :(requeststatus === "Matched")?<div className="text-tertiary flex items-center justify-center bg-green-700 px-2 py-1 rounded-md">Matched</div>:<></>
                                 }
                                 <button onClick={()=>{
                                     dispatch(postLikesByMemberId(selected.memberId))
