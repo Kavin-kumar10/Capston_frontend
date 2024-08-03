@@ -1,13 +1,8 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios'
 
-// export const getMembers = createAsyncThunk('gets/getMembers',async () =>{
-//     return axios.get('https://localhost:7073/api/Member').then((res)=>{
-//         return res.data;
-//     })
-// })
 
-const baseurl = "https://localhost:7073/api"
+const baseurl = "https://matrimonykavinapi.azurewebsites.net/api/"
 const localdata = JSON.parse(localStorage.getItem('user'));
 
 export const postMyPictures = createAsyncThunk('post/postMyPictures',async (uploadPictures) => {

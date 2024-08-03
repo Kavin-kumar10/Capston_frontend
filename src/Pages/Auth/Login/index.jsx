@@ -54,7 +54,7 @@ const Login = () =>{
                             Toastify.success("Login Success, Please wait...")
                             // Perform actions on successful login, like redirecting
                             setTimeout(() => {
-                                window.location.reload();
+                                navigate('/');
                             }, 1000);
                         } else {
                             Toastify.error(resultAction.error.message);

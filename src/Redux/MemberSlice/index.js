@@ -3,7 +3,7 @@ import axios from 'axios'
 
 const token = JSON.parse(localStorage.getItem('user'))?.token;
 console.log(token);
-const baseurl = "https://localhost:7073/api"
+const baseurl = "https://matrimonykavinapi.azurewebsites.net/api/"
 
 // Get all members
 

@@ -1,7 +1,7 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios'
 
-const baseurl = "https://localhost:7073/api"
+const baseurl = "https://matrimonykavinapi.azurewebsites.net/api/"
 const token = JSON.parse(localStorage.getItem('user'))?.token;
 
 export const getLikesByMemberId = createAsyncThunk('gets/getLikesByMemberId',async () =>{
