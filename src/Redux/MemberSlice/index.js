@@ -33,7 +33,7 @@ export const getMyProfile = createAsyncThunk('gets/getMyProfile',async () =>{
         });
         return response.data;
       } catch (error) {
-        console.error('Error fetching personal information:', error);
+        console.error('Error fetching my profile information:', error);
         throw error;
       }
 })
@@ -49,7 +49,7 @@ export const updateMyProfile = createAsyncThunk('put/putMyProfile',async (newPro
       console.log(response.data);
       return response.data;
     } catch (error) {
-      console.error('Error fetching personal information:', error);
+      console.error('Error updating my profile information:', error);
       throw error;
     }
 })
@@ -121,7 +121,7 @@ export const getPersonalInformationByMemberId = createAsyncThunk('gets/getsPerso
 
 
 const MemberSlice = createSlice({
-    name:"Member",
+    name:"Members",
     initialState:{
         allMembers:[],
         Profile:{},
@@ -180,8 +180,9 @@ const MemberSlice = createSlice({
 
 
         builder.addCase(getMembers.fulfilled, (state, action) => {
-          state.allMembers = action.payload.filter((elem)=>elem.role === 0);
-          state.Search.filtered = action.payload.filter((elem)=>elem.role === 0);
+          state.allMembers = action.payload.filter((elem)=>elem.role === 0 && elem.isVerified === true);
+          state.Search.filtered = action.payload.filter((elem)=>elem.role === 0 && elem.isVerified === true);
+          state.loading = false;
         })
         .addCase(getMembers.pending,(state,action)=>{
           state.loading = true;

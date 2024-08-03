@@ -7,6 +7,7 @@ import { Tooltip } from 'react-tooltip'
 import { postMyPictures,updateProfilePic } from "../../Redux/PicturesSlice";
 import { getMyProfile, getPersonalInformationByMemberId, updateMyProfile } from "../../Redux/MemberSlice";
 import { updatePersonalData } from "../../Redux/MemberSlice";
+import Loader from "../../Components/Loader";
 import Navbar from "../../Components/Navbar";
 import { postLocate } from "../../Redux/MemberSlice";
 import Toastify from "../../utils/Toastify";
@@ -20,13 +21,14 @@ const Account= () =>{
     const myprofile = useSelector((state)=>state.Members.Profile)
     const personalDetail = useSelector((state)=>state.Members.mypersonaldetail)
     const selectedProfilePic = useSelector((state)=>state.Picture.profilePic)
+    const loading = useSelector(state=>state.Members.loading)
     const dispatch = useDispatch();
     
     useEffect(()=>{
         const dispatchFunctions = async () =>{
             try{
                 dispatch(getMyProfile());
-                dispatch(getPersonalInformationByMemberId())
+                dispatch(getPersonalInformationByMemberId(JSON.parse(localStorage.getItem('user')).memberId))
                 window.scrollTo(0, 0);
             }
             catch(err){
@@ -70,6 +72,7 @@ const Account= () =>{
 
     const [isDisabled,setDisabled] = useState(true);
     return(
+        loading?<Loader/>:
         <div className="Account flex flex-col w-screen py-28 px-5 sm:px-10 md:px-20 bg-[#F0F2F5] gap-10">
 
             <Tooltip id="my-tooltip" />
@@ -77,6 +80,7 @@ const Account= () =>{
 
             {/* Header  */}
 
+            
             <div className="flex justify-between items-start">
                 <div className="flex flex-col">
                     <h1 className="text-2xl md:text-3xl font-bold mb-2 text-primary" >Settings</h1>
@@ -369,7 +373,7 @@ const Account= () =>{
                         console.error(err);
                     }
                 }} className="btn-primary" >Update</button>
-
+            
             </div>
         </div>
     )

@@ -3,17 +3,20 @@ import { useSelector,useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
 import { getMatchesWithMemberId, updateExistingMatch } from "../../Redux/MatchSlice";
+import Loader from "../../Components/Loader";
 // import { setDecision,setMatch } from "../../Redux/MatchSlice";
 
 const Matches = () =>{
     const AllMatch = useSelector(state => state.Match.MyAllMatches);
     const myProfile = useSelector(state => state.Members.Profile)
+    const loading = useSelector(state=> state.Match.loading)
     const dispatch = useDispatch();
     useEffect(()=>{
         dispatch(getMatchesWithMemberId())
     },[dispatch])
-    const [required,setRequired] = useState(AllMatch.Requests)
+    const [required,setRequired] = useState()
     return(
+        loading?<Loader/>:
         <div className="Matches  bg-tertiary w-screen min-h-screen flex flex-col px-5 md:px-10 lg:px-20 py-28 gap-5">
             <Navbar/>
                 <h1 className="text-primary text-2xl sm:text-3xl font-bold">Matches</h1>
@@ -117,7 +120,7 @@ const Matches = () =>{
                                 </div>
                             </Link>)
                         }
-                        )}</div>:<></>
+                        )}</div>:<div></div>
                     }
         </div>
     )

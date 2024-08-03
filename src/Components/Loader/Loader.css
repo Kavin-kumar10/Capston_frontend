@@ -1,7 +1,6 @@
 .Preloader{
     height: 100vh;
-    width: 100wh;
-    background-color:white;
+    width: 100vw;
     display: flex;
     align-items: center;
     justify-content: center;

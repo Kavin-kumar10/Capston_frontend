@@ -92,13 +92,13 @@ const Profile = () =>{
             {/* Request pop */}
             {
                 pop?
-                <div id="MatchRequestPop" class="rounded-md h-screen z-20 w-screen fixed bg-mode bg-opacity-50 top-0 left-0 flex items-center justify-center">
-                    <div class="bg-mode p-5 w-full m-1 md:w-1/2 lg:w-1/3 rounded-sm shadow-sm shadow-secondary">
-                        <h1 class="text-primary text-xl md:text-2xl font-semibold my-3">Match Request</h1>
-                        <p class="mb-3 text-lg text-secondary opacity-60">Match request to {selected.personName}</p>
-                        <input onChange={(e)=>dispatch(setPostMessage(e.target.value))} id="message" name="message" class="rounded-md w-full px-2 md:px-5 py-1 md:py-2 outline-none border border-secondary" type="text" placeholder="Hey Let's get matched ...."/>
-                        <div class="flex mt-3 gap-5">
-                            <button onClick={()=>dispatch(setPopClose())} id="cancel" class="rounded-md bg-tertiary text-offmode border-2 border-tertiary md:px-4 md:py-1 px-2 py-1">Cancel</button>
+                <div id="MatchRequestPop" className="rounded-md h-screen z-20 w-screen fixed bg-mode bg-opacity-50 top-0 left-0 flex items-center justify-center">
+                    <div className="bg-mode p-5 w-full m-1 md:w-1/2 lg:w-1/3 rounded-sm shadow-sm shadow-secondary">
+                        <h1 className="text-primary text-xl md:text-2xl font-semibold my-3">Match Request</h1>
+                        <p className="mb-3 text-lg text-secondary opacity-60">Match request to {selected.personName}</p>
+                        <input onChange={(e)=>dispatch(setPostMessage(e.target.value))} id="message" name="message" className="rounded-md w-full px-2 md:px-5 py-1 md:py-2 outline-none border border-secondary" type="text" placeholder="Hey Let's get matched ...."/>
+                        <div className="flex mt-3 gap-5">
+                            <button onClick={()=>dispatch(setPopClose())} id="cancel" className="rounded-md bg-tertiary text-offmode border-2 border-tertiary md:px-4 md:py-1 px-2 py-1">Cancel</button>
                             <button onClick={async ()=>{
                                     try{
                                         await dispatch(postNewMatch(postmatch))
@@ -112,7 +112,7 @@ const Profile = () =>{
                                         console.error(err)
                                     }
                                 }
-                            } id="submission"  class="rounded-md bg-primary text-mode border-2 border-primary md:px-4 md:py-1 px-2 py-1 ">Request</button>
+                            } id="submission"  className="rounded-md bg-primary text-mode border-2 border-primary md:px-4 md:py-1 px-2 py-1 ">Request</button>
                         </div>
                     </div>
                 </div>:<></>

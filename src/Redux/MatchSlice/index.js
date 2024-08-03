@@ -79,6 +79,7 @@ const MatchSlice = createSlice({
           decision:"",
           match:{}
         },
+        loading:false,
         selectedmatchstatus:"",
         pop:false
     },

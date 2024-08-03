@@ -3,11 +3,13 @@ import { history, home } from "../../Assets";
 import { useSelector } from "react-redux";
 import Navbar from "../../Components/Navbar";
 import Card from "../../Components/Card";
+import Loader from "../../Components/Loader";
 // import { Link } from "react-router-dom";
 // import Loader from "../../Components/Loader";
 
 const Home = () =>{
     const Members = useSelector((state)=>state.Members.allMembers);
+    const loading = useSelector(state => state.Members.loading)
 
     useEffect(()=>{
         window.scrollTo(0, 0);
@@ -15,7 +17,7 @@ const Home = () =>{
     console.log(Members);
 
     return(
-        // loading?<Loader/>:
+        loading?<Loader/>:
         <div className="Home flex flex-col">
             <Navbar/>
             <div className="flex bg-mild py-28 xl:py-0 px-5 sm:px-10 md:px-20 h-screen flex-col-reverse text-center md:text-right md:flex-row">
