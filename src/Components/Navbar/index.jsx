@@ -21,11 +21,11 @@ const Navbar = () =>{
             {
                 premium?
                 <div id="PremiumPOP" className="rounded-md h-screen z-20 w-screen fixed bg-white bg-opacity-50 top-0 left-0 flex items-center justify-center">
-                    <div class="relative bg-gradient-to-r from-offmode via-primary to-primary flex flex-col gap-5 items-center justify-center text-center p-5 h-2/3 w-full m-1 sm:w-1/2 lg:w-3/5 rounded-md shadow-sm shadow-secondary">
-                    <div onClick={()=>setPremium(false)} className="absolute top-5  right-5">
+                    <div class="relative bg-gradient-to-r from-offmode via-primary to-primary flex flex-col gap-5 items-center justify-center text-center p-5 h-1/2 sm:h-2/3 m-1 w-4/5 sm:w-1/2 lg:w-3/5 rounded-md shadow-sm shadow-secondary">
+                    <div onClick={()=>setPremium(false)} className="absolute top-5 right-5">
                         <IoMdClose className="cursor-pointer" size={30}/>
                     </div>
-                        <h1 className="text-tertiary font-bold text-lg sm:text-2xl md:text-5xl w-4/5 ">Get Your Premium Subscription Now</h1>
+                        <h1 className="text-tertiary font-extrabold text-3xl tracking-wider w-full md:text-5xl md:w-4/5 ">Get Your Premium Subscription Now</h1>
                         <div className="flex flex-col gap-3">
                             <p className="text-tertiary opacity-70 font-bold">Get notified by people 120% more than Usual</p>
                             <p className="text-tertiary opacity-70 font-bold ">Get upto 5 Personal Details Credentials per day</p>
@@ -43,7 +43,8 @@ const Navbar = () =>{
                 <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname === "/Like"?"text-primary":""}`} to='/Like'>LIKED</Link>
                 <Link className={`opacity-65 hover:opacity-100 cursor-pointer ${window.location.pathname === "/Account"?"text-primary":""}`} to='/Account'>SETTINGS</Link>
                 {
-                    myprofile.dailyLog?<div className="px-3 py-2 text-primary border-2 border-primary rounded-md flex items-center justify-center gap-5 font-bold">
+                        myprofile.membership === 1 && myprofile.dailyLog
+                        ?<div className="px-3 py-2 text-primary border-2 border-primary rounded-md flex items-center justify-center gap-5 font-bold">
                         Credits : {myprofile.dailyLog.creditsCount}
                     </div>:<div onClick={()=>setPremium(true)} className="cursor-pointer px-3 py-2 text-primary border-2 border-primary rounded-md flex items-center justify-center gap-5 font-bold">
                         For Premium
@@ -62,7 +63,22 @@ const Navbar = () =>{
                     <Link className="rounded-md opacity-65 hover:opacity-100 cursor-pointer bg-offmode hover:bg-primary text-white px-5 py-4" to='/Search'>Search</Link>
                     <Link className="rounded-md opacity-65 hover:opacity-100 cursor-pointer bg-offmode hover:bg-primary text-white px-5 py-4" to='/Matches'>Matches</Link>
                     <Link className="rounded-md opacity-65 hover:opacity-100 cursor-pointer bg-offmode hover:bg-primary text-white px-5 py-4" to='/Like'>Liked</Link>
-                    <Link className=" rounded-md opacity-65 hover:opacity-100 cursor-pointer bg-offmode hover:bg-primary text-white px-5 py-4" to='/Account'>Settings</Link>
+                    <Link  className=" rounded-md opacity-65 hover:opacity-100 cursor-pointer bg-offmode hover:bg-primary text-white px-5 py-4" to='/Account'>Settings</Link>
+                    {
+                        myprofile.membership === 1 && myprofile.dailyLog
+                        ?<div className="px-3 py-2 text-primary border-2 border-primary rounded-md flex items-center justify-center gap-5 font-bold">
+                        Credits : {myprofile.dailyLog.creditsCount}
+                        </div>:<div onClick={()=>{
+                            setOpen((prev)=>!prev)
+                            setPremium(true);
+                        }} className="cursor-pointer px-3 py-2 text-primary border-2 border-primary rounded-md flex items-center justify-center gap-5 font-bold">
+                            For Premium
+                        </div>
+                        }
+                        <div onClick={()=>{
+                            localStorage.removeItem('user');
+                            window.location.reload();
+                        }} className="cursor-pointer px-3 py-2 text-white bg-primary rounded-md flex items-center justify-center gap-5 font-bold">Sign Out</div>
                 </ul>:<></>
             }
         </div>

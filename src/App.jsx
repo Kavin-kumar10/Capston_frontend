@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { getMembers, getMyPersonalDetails, getMyProfile } from './Redux/MemberSlice';
+import { getMatchesWithMemberId } from './Redux/MatchSlice';
 import Home from './Pages/Home';
 import Account from './Pages/Account';
 import Login from './Pages/Auth/Login';
@@ -28,6 +29,7 @@ function App() {
     dispatch(getMembers())
     dispatch(getMyProfile())
     dispatch(getMyPersonalDetails())
+    dispatch(getMatchesWithMemberId())
     if(localStorage.getItem('user')){
       const localdata = JSON.parse(localStorage.getItem('user'));
       dispatch(Validator(localdata.token))
@@ -42,7 +44,7 @@ console.log(token);
         <Routes>
           <Route path='/Login' element={<Login/>}/>
           <Route path='/Register' element={<Register/>}/>
-          <Route element={<PrivateRoutes/>}>
+          {/* <Route element={<PrivateRoutes/>}> */}
             <Route path='/' element={<Home/>}/>
             <Route path='/Profile/:userid' element={<Profile/>}/>
             <Route path='/Account' element={<Account/>}/>
@@ -50,7 +52,7 @@ console.log(token);
             <Route path='/Search' element={<Search/>}/>
             <Route path='/Like' element={<LikeScreen/>}/>
             <Route path='/Admin/Activate' element={<Activate/>}/>
-          </Route>
+          {/* </Route> */}
         </Routes>
       </div>
     </Router>

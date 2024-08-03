@@ -29,8 +29,8 @@ const Home = () =>{
                 </div>
             </div>
             <div className="bg-tertiary p-5 sm:p-10 md:p-20 flex flex-col gap-10">
-                <div className="flex flex-col gap-3">
-                    <h1 className="text-lg sm:text-xl md:text-3xl font-bold">Featured Profiles</h1>
+                <div className="flex flex-col gap-2 md:gap-3">
+                    <h1 className="text-xl md:text-3xl font-bold">Featured Profiles</h1>
                     <div className="w-20 h-1 sm:h-2 bg-primary"></div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">

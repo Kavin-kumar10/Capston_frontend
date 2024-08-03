@@ -14,6 +14,7 @@ import Map from "../../Components/Map";
 //Reducers
 import { setPopClose,setPopOpen } from "../../Redux/MatchSlice";
 import { setPostMessage,setPostToProfileId } from "../../Redux/MatchSlice";
+import { setRequestStatus } from "../../Redux/MatchSlice";
 
 //Async Functions
 import { getMemberById, getMyProfile } from "../../Redux/MemberSlice";
@@ -35,17 +36,32 @@ const Profile = () =>{
 
     //Selected Member
     const selected = useSelector(state=>state.Members.Selected)
-
-    //Pop
+    
+    
+    //Match slices
     const pop = useSelector(state => state.Match.pop)
+    const allmatches = useSelector(state => state.Match.MyAllMatches.all)
     const postmatch = useSelector(state=>state.Match.PostMatchRequest)
+    const requeststatus = useSelector(state => state.Match.selectedmatchstatus);
 
+    
     //Get Request for Selected 
     let value = useParams();
     console.log(value.userid);
     useEffect(()=>{
-        window.scrollTo(0, 0);
-        dispatch(getMemberById(value.userid))
+        dispatch(setRequestStatus({allmatches,selected}))
+    },[selected])
+    useEffect(()=>{
+        const asyncfunction  = async()=>{
+            try{
+                window.scrollTo(0, 0);
+                dispatch(getMemberById(value.userid))
+            }
+            catch(err){
+
+            }
+        }
+        asyncfunction();
     },[dispatch,value.userid])
     console.log(selected);
 
@@ -88,6 +104,9 @@ const Profile = () =>{
                                         await dispatch(postNewMatch(postmatch))
                                         Toastify.success("Request Sent Successfull");
                                         dispatch(setPopClose())
+                                        setTimeout(()=>{
+                                            window.location.reload();
+                                        },1000)
                                     }
                                     catch(err){
                                         console.error(err)
@@ -128,18 +147,24 @@ const Profile = () =>{
                     <div className="flex flex-col gap-4 items-start">
                         <h1 className="text-md font-bold opacity-50">Hurry up ... ! Send Match Request Now ... !</h1>
                             <div className="flex gap-3">
-                                <button onClick={async()=>
-                                    {
-                                        try{
-                                            await dispatch(setPopOpen());
-                                            await dispatch(setPostToProfileId(selected.memberId))
-                                        }
-                                        catch(err){
-                                            console.error("Error Sending Request");
-                                        }
-                                        
-                                    }
-                                } className="text-tertiary bg-primary px-2 py-1 rounded-md">Request Match</button>
+                                {
+                                    (requeststatus == "")?
+                                        <button onClick={async()=>
+                                            {
+                                                try{
+                                                    await dispatch(setPopOpen());
+                                                    await dispatch(setPostToProfileId(selected.memberId))
+                                                }
+                                                catch(err){
+                                                    console.error("Error Sending Request");
+                                                }
+                                                
+                                            }
+                                        } className="felx items-center justify-center text-tertiary bg-primary px-2 py-1 rounded-md">Request Match</button>
+                                    :(requeststatus == "Pending")?
+                                    <div className="flex items-center justify-center text-tertiary bg-gray-500 px-2 py-1 rounded-md">Pending</div>
+                                    :(requeststatus == "Matched")?<div className="text-tertiary flex items-center justify-center bg-green-700 px-2 py-1 rounded-md">Matched</div>:<></>
+                                }
                                 <button onClick={()=>{
                                     dispatch(postLikesByMemberId(selected.memberId))
                                     Toastify.success("Added to Wishlist");

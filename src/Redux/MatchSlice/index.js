@@ -79,9 +79,25 @@ const MatchSlice = createSlice({
           decision:"",
           match:{}
         },
+        selectedmatchstatus:"",
         pop:false
     },
     reducers:{
+      setRequestStatus:(state,action)=>{
+
+        let {allmatches,selected} = action.payload
+        const foundMatch = allmatches.find(match => (
+          match.fromProfileId === selected.memberId ||
+          match.toProfileId === selected.memberId
+        ));        
+        
+        if(foundMatch){
+          state.selectedmatchstatus = foundMatch.status;
+        }
+        else{
+          state.selectedmatchstatus = ""
+        }
+      },
       setPopOpen:(state,action)=>{ state.pop = true},
       setPopClose:(state,action)=>{ state.pop = false},
       setPostToProfileId:(state,action)=>{ state.PostMatchRequest.toProfileId = action.payload},
@@ -125,6 +141,6 @@ const MatchSlice = createSlice({
       },
 })
 
-export const {setPopClose,setPopOpen,setPostMessage,setPostToProfileId,setDecision,setMatch} = MatchSlice.actions;
+export const {setPopClose,setPopOpen,setPostMessage,setPostToProfileId,setDecision,setMatch,setRequestStatus} = MatchSlice.actions;
 
 export default MatchSlice.reducer
