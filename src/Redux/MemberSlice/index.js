@@ -132,8 +132,19 @@ const MemberSlice = createSlice({
             SearchPop:false,
             filtered:[]
         },
+        // Account
+        Accountpagedata:{},
+        AccountPersonal:{}
     },
     reducers:{
+        setAccountPersonalData:(state,action)=>{
+          let {field,value} = action.payload;
+          state.AccountPersonal[field] = value;
+        },
+        setAccountProfileData:(state,action)=>{
+            let {field,value} = action.payload;
+            state.Accountpagedata[field] = value;
+        },
         setFilteredToAll:(state,action)=>{
           state.Search.filtered = state.allMembers;
         },
@@ -197,8 +208,9 @@ const MemberSlice = createSlice({
         builder.addCase(getMyProfile.fulfilled,(state,action)=>{
             state.loading = false;
             state.Profile = action.payload;
-            state.allMembers = state.allMembers.filter((members)=>members.memberId !== state.Profile.memberId);
-            state.Search.filtered = state.Search.filtered.filter((members)=>members.memberId !== state.Profile.memberId);
+            state.Accountpagedata = action.payload;
+            state.allMembers = state.allMembers.filter((members)=>members.memberId !== action.payload.memberId);
+            state.Search.filtered = state.Search.filtered.filter((members)=>members.memberId !== action.payload.memberId);
         })
         .addCase(getMyProfile.pending,(state,action)=>{
           state.loading = true;
@@ -224,6 +236,7 @@ const MemberSlice = createSlice({
         builder.addCase(getMyPersonalDetails.fulfilled,(state,action)=>{
             state.Profile = {...state.Profile,PersonalDetails:action.payload};
             state.mypersonaldetail = action.payload;
+            state.AccountPersonal = action.payload;
             state.loading = false;
         })
         .addCase(getMyPersonalDetails.pending,(state,action)=>{
@@ -251,6 +264,6 @@ const MemberSlice = createSlice({
       },
 })
 
-export const {handlePop,SearchBarFilter,setChangesToFiltered,setFilteredToAll,setNav} = MemberSlice.actions;
+export const {handlePop,SearchBarFilter,setChangesToFiltered,setFilteredToAll,setNav,setAccountProfileData,setAccountPersonalData} = MemberSlice.actions;
 
 export default MemberSlice.reducer
