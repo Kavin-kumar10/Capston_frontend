@@ -29,7 +29,7 @@ const LikeScreen = () =>{
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                 {
                     LikedProfiles.map((elem)=>
-                        <div key={elem.memberId} className="bg-mode flex flex-col shadow-md aspect-square w-full p-5 gap-5 hover:shadow-lg cursor-pointer">
+                        <div key={elem.liked.memberId} className="bg-mode flex flex-col shadow-md aspect-square w-full p-5 gap-5 hover:shadow-lg cursor-pointer">
                             <div className="relative">
                                 <img src={elem.liked.profilePic} alt="" />
                                 <div className="absolute top-1 right-2 ">
