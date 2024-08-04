@@ -8,12 +8,12 @@ import Toastify from "../../utils/Toastify";
 // import Card from "../../Components/Card";
 
 const LikeScreen = () =>{
+    const dispatch = useDispatch();
     const LikedProfiles = useSelector(state=>state.Like.Liked);
     const loading = useSelector(state => state.Like.loading)
-    const dispatch = useDispatch();
     useEffect(()=>{
         dispatch(getLikesByMemberId())
-    },[dispatch])
+    },[dispatch,LikedProfiles.length])
     return(
         loading?<Loader/>:
         <div className="LikeScreen min-h-screen w-screen flex flex-col px-5 md:px-10 lg:px-20 py-28 gap-5 bg-tertiary ">
@@ -24,12 +24,12 @@ const LikeScreen = () =>{
             </div>
             {(LikedProfiles.length === 0)?
             <div className="h-24 w-full flex flex-col justify-center items-center border-dotted border-2 border-primary">
-                <Link to="/Search" className="text-2xl text-primary font-semibold">Add Liked profiles</Link>
+                <Link to="/Search" className="text-lg sm:text-2xl text-primary font-semibold">Add Liked profiles</Link>
             </div>:
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                 {
                     LikedProfiles.map((elem)=>
-                        <div className="bg-mode flex flex-col shadow-md aspect-square w-full p-5 gap-5 hover:shadow-lg cursor-pointer">
+                        <div key={elem.memberId} className="bg-mode flex flex-col shadow-md aspect-square w-full p-5 gap-5 hover:shadow-lg cursor-pointer">
                             <div className="relative">
                                 <img src={elem.liked.profilePic} alt="" />
                                 <div className="absolute top-1 right-2 ">
@@ -43,12 +43,15 @@ const LikeScreen = () =>{
                             </div>
                             <div className="flex gap-2">
                                 <Link to={`/Profile/${elem.liked.memberId}`} className="bg-primary text-tertiary border border-primary rounded-md px-3 py-1">View</Link>
-                                <button onClick={()=>{
-                                    dispatch(deleteLikeByLikeId(elem.likeId))
-                                    Toastify.success("Removed from Wishlist");
-                                    setTimeout(()=>{
-                                        window.location.reload()
-                                    },1000)
+                                <button onClick={async()=>{
+                                    try{
+                                        const actionresult = await dispatch(deleteLikeByLikeId(elem.likeId))
+                                        if(deleteLikeByLikeId.fulfilled.match(actionresult)){
+                                            Toastify.success("Removed from Wishlist");
+                                        }
+                                    }
+                                    catch(err){
+                                    }
                                 }} className="text-primary bg-tertiary border border-primary rounded-md px-3 py-1">Remove</button>
                             </div>
                         </div>                    

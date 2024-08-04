@@ -39,7 +39,7 @@ const Activate = () =>{
             {
                 filtered?.map((elem)=>{
                     return(
-                        <div className="flex flex-col gap-5 p-5 shadow-md shadow-offmode bg-mode">
+                        <div key={elem} className="flex flex-col gap-5 p-5 shadow-md shadow-offmode bg-mode">
                             <div className="aspect-square">
                                 <img className="h-full w-full" src={elem.profilePic?elem.profilePic:dummy} alt="" />
                             </div>

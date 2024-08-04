@@ -175,7 +175,7 @@ const Account= () =>{
                     <div className="flex flex-wrap gap-5">
                         {
                             personalDetail?.pictures?.map((elem)=>
-                                <img className="h-20 w-20 text-gray-500 bg-tertiary border-2 border-primary cursor-pointer rounded-md my-5 flex items-center justify-center" src={elem.pictureUrl} alt="" />
+                                <img key={elem} className="h-20 w-20 text-gray-500 bg-tertiary border-2 border-primary cursor-pointer rounded-md my-5 flex items-center justify-center" src={elem.pictureUrl} alt="" />
                             )
                         }
                         <label htmlFor="image" className="h-20 w-20 text-gray-500 bg-tertiary border-2 border-primary cursor-pointer rounded-md my-5 flex items-center justify-center">

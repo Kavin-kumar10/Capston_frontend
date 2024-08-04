@@ -161,7 +161,7 @@ const Profile = () =>{
                                                 }
                                                 
                                             }
-                                        } className="felx items-center justify-center text-tertiary bg-primary px-2 py-1 rounded-md">Request Match</button>
+                                        } className="flex items-center justify-center text-tertiary bg-primary px-2 py-1 rounded-md">Request Match</button>
                                     :(requeststatus === "Pending")?
                                     <div className="flex items-center justify-center text-tertiary bg-gray-500 px-2 py-1 rounded-md">Pending</div>
                                     :(requeststatus === "Matched")?<div className="text-tertiary flex items-center justify-center bg-green-700 px-2 py-1 rounded-md">Matched</div>:<></>
@@ -227,7 +227,7 @@ const Profile = () =>{
                             <div className="flex gap-5 flex-wrap">
                                 {
                                     selected.PersonalDetail.pictures.map((elem)=>
-                                        <img onClick={()=>setImg(elem.pictureUrl)} className="h-32 w-32 bg-tertiary border-2 cursor-pointer rounded-md my-5 flex items-center justify-center" src={elem.pictureUrl} alt="" />
+                                        <img key={elem.memberId} onClick={()=>setImg(elem.pictureUrl)} className="h-32 w-32 bg-tertiary border-2 cursor-pointer rounded-md my-5 flex items-center justify-center" src={elem.pictureUrl} alt="" />
                                     )
                                 }
                             </div>

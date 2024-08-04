@@ -38,7 +38,7 @@ const Home = () =>{
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     {
                         Members.filter((elem)=>elem.membership === 1  && elem.memberId !== Number(JSON.parse(localStorage.getItem('user')).memberId)).map((elem)=>
-                            <Card elem={elem}/>
+                            <Card key={elem.memberId} elem={elem}/>
                         )
                     }
                 </div>

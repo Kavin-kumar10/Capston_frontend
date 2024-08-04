@@ -89,13 +89,14 @@ const LikeSlice = createSlice({
 
         builder
         .addCase(deleteLikeByLikeId.pending,(state)=>{
-          state.loading = true;
+          // state.loading = true;
         })
         .addCase(deleteLikeByLikeId.fulfilled, (state, action) => {
-          state.loading = false;
+          // state.loading = false;
+          state.Liked = state.Liked.filter((elem)=>elem.memberId !== action.payload.memberId)
         })
         .addCase(deleteLikeByLikeId.rejected, (state, action) => {
-            state.loading = false;
+            // state.loading = false;
             state.error = action.error.message; // Capture error message
         });
       },
