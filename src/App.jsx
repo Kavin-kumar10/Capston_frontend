@@ -38,8 +38,7 @@ function App() {
       dispatch(Validator(localdata.token))
     }
     },[dispatch])
-  const token = JSON.parse(localStorage.getItem('token'));
-console.log(token);
+  // const token = JSON.parse(localStorage.getItem('token'));
   return (
     <Router>
       <div className="App overflow-x-hidden text-offmode">

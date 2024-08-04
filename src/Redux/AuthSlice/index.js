@@ -3,6 +3,7 @@ import axios from 'axios'
 
 
 const baseurl = "https://matrimonykavinapi.azurewebsites.net/api/"
+// const baseurl = "https://localhost:7073/api"
 
 //Validator
 
@@ -14,7 +15,6 @@ export const Validator = createAsyncThunk('gets/getsValidation',async (token) =>
               'Authorization': `Bearer ${token}`,
             },
           });
-          console.log(response.data);
           return response.data;
       } 
       catch (error) {
@@ -37,12 +37,12 @@ export const postLoginRequest = createAsyncThunk('posts/postLoginRequest',async 
               'Content-Type': 'application/json',
             },
           });
-          console.log(response.data);
+        //   console.log(response.data);
           localStorage.setItem('user',JSON.stringify(response.data));
           return response.data;
       } 
       catch (error) {
-        console.error('Error loggin in information:', error?.response?.data?.message);
+        // console.error('Error loggin in information:', error?.response?.data?.message);
         throw error?.response?.data?.message;
       }
 })
@@ -57,11 +57,11 @@ export const postRegisterRequest = createAsyncThunk('posts/postRegisterRequest',
               'Content-Type': 'application/json',
             },
           });
-          console.log(response.data);
+        //   console.log(response.data);
           return response.data;
       } 
       catch (error) {
-        console.error('Error fetching personal information:', error);
+        // console.error('Error fetching personal information:', error);
         throw error;
       }
 })
@@ -72,6 +72,7 @@ const AuthSlice = createSlice({
     initialState:{
         loading:false,
         isAuthenticated:true,
+        role : "",
         Log:{
             email:"",
             password:""
@@ -97,13 +98,13 @@ const AuthSlice = createSlice({
             state.loading = true;
         })
         .addCase(Validator.fulfilled,(state,action)=>{
-            console.log(action.payload.authorized);
+            // console.log(action.payload.authorized);
             state.isAuthenticated = action.payload.authorized;
+            state.role = action.payload.role;
         })
         .addCase(Validator.rejected,(state,action)=>{
-            console.log(action.error);
+            // console.log(action.error);
             state.isAuthenticated = false;
-            console.log("Invalid entry");
         })
 
 

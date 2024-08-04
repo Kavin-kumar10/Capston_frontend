@@ -12,19 +12,18 @@ import { useNavigate } from "react-router-dom";
 const Login = () =>{
     const navigate = useNavigate();
     let isAuthenticated = useSelector(state => state.Auth.isAuthenticated)
+    let role = useSelector(state => state.Auth.role)
     const Log = useSelector(state=>state.Auth.Log);
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        // if(localStorage.getItem('user')){
-        //     const localdata = JSON.parse(localStorage.getItem('user'));
-        //     dispatch(Validator(localdata.token));
-        // }
-        if(isAuthenticated){
+        if(isAuthenticated && role === "admin"){
+            navigate('/Admin/Activate')
+        }
+        else if(isAuthenticated && role === "user"){
             navigate('/');
         }
-        
-    },[isAuthenticated,navigate])
+    },[isAuthenticated,navigate,role])
     
     const handleEmailChange = (e) => {
         dispatch(setLogEmail(e.target.value)); // Dispatch action to update email
@@ -50,22 +49,28 @@ const Login = () =>{
                         const resultAction = await dispatch(postLoginRequest(Log));
                 
                         if (postLoginRequest.fulfilled.match(resultAction)) {
-                            console.log('Operation succeeded:', resultAction.payload);
-                            Toastify.success("Login Success, Please wait...")
-                            // Perform actions on successful login, like redirecting
-                            setTimeout(() => {
-                                navigate('/');
-                            }, 1000);
+                            // Perform actions on successful login, like redirecting                            
+                            if(role === "admin"){
+                                Toastify.success("Login as Admin, Please wait...")
+                                setTimeout(()=>{
+                                    navigate('/Admin/Activate')
+                                },1000)
+                            }
+                            else{
+                                Toastify.success("Login Success, Please wait...")
+                                setTimeout(() => {
+                                    navigate('/');
+                                }, 1000);
+                            }
                         } else {
                             Toastify.error(resultAction.error.message);
-                            console.error('Operation failed:', resultAction.error.message);
                             if(resultAction.error.message === "User is disabled"){
                                 Toastify.info("Get verified call : 9876543214");
                             }
                             // Handle errors
                         }
                     } catch (error) {
-                        console.error('Unexpected error:', error);
+                        // console.error('Unexpected error:', error);
                     }
                     handlereset();
                 }} id="login" action="/" className="w-full gap-2 py-5 rounded-md flex items-center justify-center flex-col">

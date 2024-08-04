@@ -3,7 +3,6 @@ import axios from 'axios'
 
 
 const token = JSON.parse(localStorage.getItem('user'))?.token;
-console.log(token);
 const baseurl = "https://matrimonykavinapi.azurewebsites.net/api/"
 
 
@@ -15,7 +14,6 @@ export const GetAllMembers = createAsyncThunk('gets/getsAllMembers',async () =>{
               'Authorization': `Bearer ${token}`,
             },
           });
-          console.log(response.data);
           return response.data;
       } 
       catch (error) {
@@ -35,7 +33,6 @@ export const DeactivateMember = createAsyncThunk('put/updateDeactivate',async (m
               'Authorization': `Bearer ${token}`,
             },
           });
-          console.log(response.data);
           return response.data;
       } 
       catch (error) {
@@ -49,14 +46,12 @@ export const DeactivateMember = createAsyncThunk('put/updateDeactivate',async (m
 
 export const ActivateMember = createAsyncThunk('put/updateActivate',async (Activator) =>{
     try {
-        console.log(Activator);
         const response = await axios.put(`${baseurl}/Activate/Activate`,Activator,{
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
             },
           });
-          console.log(response.data);
           return response.data;
       } 
       catch (error) {
@@ -129,7 +124,6 @@ const AdminSlice = createSlice({
             state.filtered = action.payload;
         })
         .addCase(GetAllMembers.rejected,(state,action)=>{
-            console.log(action.error);
         })
       },
 })

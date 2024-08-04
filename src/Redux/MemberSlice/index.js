@@ -2,7 +2,7 @@ import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios'
 
 const token = JSON.parse(localStorage.getItem('user'))?.token;
-console.log(token);
+// console.log(token);
 const baseurl = "https://matrimonykavinapi.azurewebsites.net/api/"
 
 // Get all members
@@ -33,7 +33,7 @@ export const getMyProfile = createAsyncThunk('gets/getMyProfile',async () =>{
         });
         return response.data;
       } catch (error) {
-        console.error('Error fetching my profile information:', error);
+        // console.error('Error fetching my profile information:', error);
         throw error;
       }
 })
@@ -45,11 +45,11 @@ export const updateMyProfile = createAsyncThunk('put/putMyProfile',async (newPro
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Below is updated");
-      console.log(response.data);
+      // console.log("Below is updated");
+      // console.log(response.data);
       return response.data;
     } catch (error) {
-      console.error('Error updating my profile information:', error);
+      // console.error('Error updating my profile information:', error);
       throw error;
     }
 })
@@ -67,7 +67,7 @@ export const getMyPersonalDetails = createAsyncThunk('gets/getMyPersonalDetails'
         });
         return response.data;
       } catch (error) {
-        console.error('Error fetching personal information:', error);
+        // console.error('Error fetching personal information:', error);
         throw error;
       }
 })
@@ -79,11 +79,11 @@ export const updatePersonalData = createAsyncThunk('put/putMyPersonalData',async
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Below is updated Personal Data");
-      console.log(response.data);
+      // console.log("Below is updated Personal Data");
+      // console.log(response.data);
       return response.data;
     } catch (error) {
-      console.error('Error fetching personal information:', error);
+      // console.error('Error updating personal information:', error);
       throw error;
     }
 })
@@ -98,7 +98,7 @@ export const postLocate = createAsyncThunk('post/postLocate',async (postdata) =>
 
       return response.data;
     } catch (error) {
-      console.error('Error posting Locate:', error);
+      // console.error('Error posting Locate:', error);
       throw error;
     }
 })
@@ -113,7 +113,7 @@ export const getPersonalInformationByMemberId = createAsyncThunk('gets/getsPerso
         });
         return response.data;
       } catch (error) {
-        console.error('Error fetching personal information:', error?.response?.data?.message);
+        // console.error('Error fetching personal information:', error?.response?.data?.message);
         throw error?.response?.data?.message;
       }
 })
@@ -163,7 +163,7 @@ const MemberSlice = createSlice({
           });
 
           state.Search.filtered = filteredData;
-          console.log(action.payload);
+          // console.log(action.payload);
         },
         handlePop:(state,action)=>{
             if(action.payload === 'open') state.Search.SearchPop = true;
@@ -199,7 +199,7 @@ const MemberSlice = createSlice({
           state.loading = true;
         })
         .addCase(getMembers.rejected,(state,action)=>{
-          console.error("Error fetching information");
+          // console.error("Error fetching information");
           state.loading = false;  
         })
 
@@ -243,7 +243,7 @@ const MemberSlice = createSlice({
           state.personalLoading = true;
         })
         .addCase(getMyPersonalDetails.rejected,(state,action)=>{
-          console.error("Error fetching information");
+          // console.error("Error fetching information");
           state.personalLoading = false;  
         })
 
@@ -258,7 +258,7 @@ const MemberSlice = createSlice({
             state.loading = true;
           })
           .addCase(getPersonalInformationByMemberId.rejected,(state,action)=>{
-            console.error("Error fetching information");
+            // console.error("Error fetching information");
             state.loading = false;  
           })
       },

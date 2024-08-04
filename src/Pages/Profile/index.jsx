@@ -110,7 +110,7 @@ const Profile = () =>{
                                         },1000)
                                     }
                                     catch(err){
-                                        console.error(err)
+                                        // console.error(err)
                                     }
                                 }
                             } id="submission"  className="rounded-md bg-primary text-mode border-2 border-primary md:px-4 md:py-1 px-2 py-1 ">Request</button>
@@ -157,7 +157,7 @@ const Profile = () =>{
                                                     await dispatch(setPostToProfileId(selected.memberId))
                                                 }
                                                 catch(err){
-                                                    console.error("Error Sending Request");
+                                                    // console.error("Error Sending Request");
                                                 }
                                                 
                                             }
@@ -265,7 +265,7 @@ const Profile = () =>{
                                     Toastify.success("Data retriving success")
                                 } else {
                                     Toastify.error(actiongetperonal.error.message);
-                                    console.error('Operation failed:', actiongetperonal.error.message);
+                                    // console.error('Operation failed:', actiongetperonal.error.message);
                                 }
                             }catch(err){
                             }

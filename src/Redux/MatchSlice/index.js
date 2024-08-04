@@ -4,7 +4,6 @@ import axios from 'axios'
 const baseurl = "https://matrimonykavinapi.azurewebsites.net/api/"
 const memberId = Number(JSON.parse(localStorage.getItem('user'))?.memberId);
 const token = JSON.parse(localStorage.getItem('user'))?.token;
-console.log(token);
 
 //Get Matches with memberId
 
@@ -17,7 +16,7 @@ export const getMatchesWithMemberId = createAsyncThunk('gets/getMatchesWithMembe
         });
         return response.data;
       } catch (error) {
-        console.error('Error fetching personal information:', error);
+        // console.error('Error fetching personal information:', error);
         throw error;
       }
 })
@@ -26,16 +25,14 @@ export const getMatchesWithMemberId = createAsyncThunk('gets/getMatchesWithMembe
 
 export const postNewMatch = createAsyncThunk('posts/postNewMatch',async (matchRequestDto) =>{
   try {
-      console.log(matchRequestDto);
       const response = await axios.post(`${baseurl}/Matches`, matchRequestDto ,{
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data);
       return response.data;
     } catch (error) {
-      console.error('Error fetching personal information:', error);
+      // console.error('Error fetching personal information:', error);
       throw error;
     }
 })
@@ -47,17 +44,15 @@ export const updateExistingMatch = createAsyncThunk('update/updateExistingMatch'
         ...match,
         status: decision,
       };
-      console.log(updatedMatch);
       const response = await axios.put(`${baseurl}/Matches`, updatedMatch ,{
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       
-      console.log(response.data);
       return response.data;
     } catch (error) {
-      console.error('Error updating Existing match:', error);
+      // console.error('Error updating Existing match:', error);
       throw error;
     }
 })

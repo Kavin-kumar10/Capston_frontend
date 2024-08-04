@@ -58,7 +58,7 @@ const Matches = () =>{
                                                         await dispatch(updateExistingMatch({decision:"Rejected",match:elem}))
                                                         await dispatch(getMatchesWithMemberId());
                                                     }catch(err){
-                                                        console.log(err); 
+                                                        // console.log(err); 
                                                     }
                                                     }} className="bg-mode w-full font-semibold shadow-sm shadow-gray-500 px-3 py-1 rounded-md">Reject</button>
                                                 <button onClick={async ()=>{
@@ -67,7 +67,7 @@ const Matches = () =>{
                                                         await dispatch(getMatchesWithMemberId());
                                                     }
                                                     catch(err){
-                                                        console.log(err);
+                                                        // console.log(err);
                                                         
                                                     }
                                                     }} className="bg-gray-500 w-full font-semibold text-mode px-3 py-1 rounded-md">Accept</button>

@@ -13,7 +13,7 @@ export const getLikesByMemberId = createAsyncThunk('gets/getLikesByMemberId',asy
         });
         return response.data;
       } catch (error) {
-        console.error('Error fetching personal information:', error);
+        // console.error('Error fetching personal information:', error);
         throw error;
       }
 })
@@ -29,7 +29,7 @@ export const postLikesByMemberId = createAsyncThunk('post/postLikesByMemberId',a
         // dispatch(getLikesByMemberId())
         return response.data;
       } catch (error) {
-        console.error('Error fetching personal information:', error?.response?.data?.message);
+        // console.error('Error fetching personal information:', error?.response?.data?.message);
         throw error?.response?.data?.message;
       }
 })
@@ -45,7 +45,7 @@ export const deleteLikeByLikeId = createAsyncThunk('delete/deleteLikeByLikeId',a
       // dispatch(getLikesByMemberId())
       return response.data;
     } catch (error) {
-      console.error('Error fetching personal information:', error);
+      // console.error('Error fetching personal information:', error);
       throw error;
     }
 })

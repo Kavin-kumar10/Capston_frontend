@@ -34,7 +34,7 @@ const Account= () =>{
                 window.scrollTo(0, 0);
             }
             catch(err){
-                console.error(err);
+                // console.error(err);
             }
         }
         dispatchFunctions();
@@ -67,7 +67,7 @@ const Account= () =>{
             Toastify.success("Updation Successfull");
         }
         catch(err){
-            console.error(err);
+            // console.error(err);
         }
     }
 
@@ -127,7 +127,7 @@ const Account= () =>{
                                 window.location.reload();
                             }
                             catch(err){
-                                console.error(err);
+                                // console.error(err);
                             }
                         }} className="flex items-center justify-center flex-col">
                         {
@@ -169,7 +169,7 @@ const Account= () =>{
                         Toastify.success("Upload Success");
                     }
                     catch(err){
-                        console.error(err);
+                        // console.error(err);
                     }
                 }}>
                     <div className="flex flex-wrap gap-5">
@@ -332,12 +332,8 @@ const Account= () =>{
                                     if (navigator.geolocation) {
                                         navigator.geolocation.getCurrentPosition(
                                           (position) => {
-                                            // Handle the position data here
-                                            console.log("Latitude:", position.coords.latitude);
-                                            console.log("Longitude:", position.coords.longitude);
-                                            // setLocation({
-                                                
-                                            // })
+                                            // console.log("Latitude:", position.coords.latitude);
+                                            // console.log("Longitude:", position.coords.longitude);
                                             setTimeout(()=>{
                                                 dispatch(postLocate({
                                                     personalDetailsId : personalDetail.personalDetailsId,
@@ -348,11 +344,13 @@ const Account= () =>{
                                           },
                                           (error) => {
                                             // Handle errors here
-                                            console.error("Error getting location:", error.message);
+                                            Toastify.error("Error getting location",error.message);
+                                            // console.error("Error getting location:", error.message);
                                           }
                                         );
                                       } else {
-                                        console.error("Geolocation is not supported by this browser.");
+                                        Toastify.error("Geolocation is not supported by this browser.")
+                                        // console.error("Geolocation is not supported by this browser.");
                                       }
                                 }
                             }
@@ -371,10 +369,10 @@ const Account= () =>{
                         Toastify.success("Personal Detail Update Successful");
                     }
                     catch(err){
-                        console.error(err);
+                        // console.error(err);
                     }
                 }} className="btn-primary" >Update</button>
-            
+                
             </div>
         </div>
     )

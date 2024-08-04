@@ -12,7 +12,6 @@ const PrivateRoutes = () => {
             if(localStorage.getItem('user')){
                 const localdata = JSON.parse(localStorage.getItem('user'));
                 dispatch(Validator(localdata.token));
-                console.log(localdata);
             }
             else{
                 dispatch(setAuthenticated(false))

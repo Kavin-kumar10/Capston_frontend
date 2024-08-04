@@ -7,12 +7,20 @@ import { Link } from "react-router-dom";
 import { setSelected } from "../../../Redux/AdminSlice";
 import { DeactivateMember } from "../../../Redux/AdminSlice";
 import { dummy } from "../../../Assets";
+import { useNavigate } from "react-router-dom";
 
 const Activate = () =>{
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    let isAuthenticated = useSelector(state => state.Auth.isAuthenticated)
+    let role = useSelector(state => state.Auth.role)
     useEffect(()=>{
+        if(isAuthenticated && role === "user"){
+            navigate('/');
+        }
         dispatch(GetAllMembers());
-    },[dispatch])
+    },[dispatch,isAuthenticated,navigate,role])
+
     const Selected = useSelector(state=>state.Admin.Selected)
     const filtered = useSelector(state=>state.Admin.filtered)
     return(

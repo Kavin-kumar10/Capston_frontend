@@ -25,13 +25,11 @@ const Search = () =>{
     },[])
     const handleFilterChange = (e) =>{
         setFilteres({...filters,[e.target.name]:e.target.value})
-        console.log(filters);
     }
     const handleFilterSubmit = ()=>{
         dispatch(setChangesToFiltered({allMembers:Members,filters:filters}));
         dispatch(handlePop('close'))
     }
-    console.log(Members);
     return(
         loading?<Loader/>:
         <div className="Search min-h-screen w-screen flex flex-col px-5 md:px-10 lg:px-20 py-28 gap-5 bg-tertiary">
