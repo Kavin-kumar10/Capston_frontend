@@ -3,22 +3,29 @@ import Navbar from "../../Components/Navbar";
 import { useSelector,useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { deleteLikeByLikeId,getLikesByMemberId } from "../../Redux/LikeSlice";
+import Loader from "../../Components/Loader/index"
 import Toastify from "../../utils/Toastify";
 // import Card from "../../Components/Card";
 
 const LikeScreen = () =>{
     const LikedProfiles = useSelector(state=>state.Like.Liked);
+    const loading = useSelector(state => state.Like.loading)
     const dispatch = useDispatch();
     useEffect(()=>{
         dispatch(getLikesByMemberId())
     },[dispatch])
     return(
+        loading?<Loader/>:
         <div className="LikeScreen min-h-screen w-screen flex flex-col px-5 md:px-10 lg:px-20 py-28 gap-5 bg-tertiary ">
             <Navbar/>
             <div className="flex flex-col gap-2">
                 <h1 className="text-primary text-2xl sm:text-3xl font-bold">Liked </h1>
                 <p className="text-lg sm:text-xl font-semibold opacity-50">List of Liked Profiles</p>
             </div>
+            {(LikedProfiles.length === 0)?
+            <div className="h-24 w-full flex flex-col justify-center items-center border-dotted border-2 border-primary">
+                <Link to="/Search" className="text-2xl text-primary font-semibold">Add Liked profiles</Link>
+            </div>:
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                 {
                     LikedProfiles.map((elem)=>
@@ -47,7 +54,7 @@ const LikeScreen = () =>{
                         </div>                    
                         )
                 }
-            </div>
+            </div>}
         </div>
     )
 }

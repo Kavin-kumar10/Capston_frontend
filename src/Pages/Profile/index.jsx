@@ -10,6 +10,7 @@ import { FaHeart } from "react-icons/fa";
 
 //Components
 import Map from "../../Components/Map";
+import Loader from "../../Components/Loader";
 
 //Reducers
 import { setPopClose,setPopOpen } from "../../Redux/MatchSlice";
@@ -43,11 +44,11 @@ const Profile = () =>{
     const allmatches = useSelector(state => state.Match.MyAllMatches.all)
     const postmatch = useSelector(state=>state.Match.PostMatchRequest)
     const requeststatus = useSelector(state => state.Match.selectedmatchstatus);
-
+    const loading = useSelector(state => state.Members.loading);
+    const PersonalLoading = useSelector(state => state.Members.personalLoading)
     
     //Get Request for Selected 
     let value = useParams();
-    console.log(value.userid);
     useEffect(()=>{
         dispatch(setRequestStatus({allmatches,selected}))
     },[selected,dispatch,allmatches])
@@ -63,24 +64,24 @@ const Profile = () =>{
         }
         asyncfunction();
     },[dispatch,value.userid])
-    console.log(selected);
 
     
     return(
+        loading?<Loader/>:
         <div className="w-screen  flex flex-col p-5 md:p-10 lg:p-20 gap-5 bg-tertiary">
 
             {/* Preview image  */}
             {
                 img?
                 <div className="fixed top-0 left-0 flex flex-col items-center justify-center w-full h-screen bg-offmode bg-opacity-50 z-50">
-                <div className="bg-tertiary rounded-lg w-full max-w-md p-6">
+                <div className="bg-tertiary rounded-lg h-fit w-2/3 md:w-1/3 p-2 md:p-6">
                   <div className="flex justify-between items-center">
-                    <h1 className="text-xl font-bold">Preview</h1>
+                    <h1 className="text-lg md:text-xl font-bold">Preview</h1>
                     <button className="text-gray-500 hover:text-gray-700">
                       <MdOutlineClose onClick={()=>setImg()} size={24} />
                     </button>
                   </div>
-                  <div className="aspect-square mt-4">
+                  <div className="aspect-square mt-2 md:mt-4">
                     <img src={img} alt="preview" className="object-cover w-full h-full rounded-md" />
                   </div>
                 </div>
@@ -130,10 +131,10 @@ const Profile = () =>{
                     <p className="back font-bold opacity-50 flex items-center justify-start"> Credits Remain : {myprofile.dailyLog.creditsCount}</p>:<></>
                 }
             </div>
-
+            
             {/* Profile Pic layout */}
 
-            <div className="flex gap-10 bg-mode p-3 sm:p-10 flex-col sm:flex-row">
+            <div className="flex gap-10 bg-mode p-5 sm:p-10 flex-col sm:flex-row">
                 <div className="max-h-52 max-w-52 aspect-square rounded-md">
                     <img onClick={()=>setImg(selected.profilePic)} className="h-full cursor-pointer w-full rounded-full" src={selected.profilePic} alt="" />
                 </div>
@@ -214,6 +215,10 @@ const Profile = () =>{
 
             <div className="rounded-md bg-mode p-1 sm:p-3 md:p-5">
                 {
+                    PersonalLoading?
+                    <div className="h-36 flex items-center justify-center w-full border-primary border-dotted border-2 bg-tertiary">
+                        <h1 className="text-lg w-2/3 text-center sm:text-xl md:text-3xl">Fetching Personal Details. Please wait ...</h1>
+                    </div>:
                     selected.PersonalDetail?
                     <div className="">
                         <div className="rounded-md bg-mode p-1 sm:p-3 md:p-5">
@@ -252,13 +257,12 @@ const Profile = () =>{
                                 const actiongetperonal = await dispatch(getPersonalInformationByMemberId(selected.memberId));
                                 await dispatch(getMyProfile())
                                 if (getPersonalInformationByMemberId.fulfilled.match(actiongetperonal)) {
-                                    Toastify.success("Personal Data retriving success, Please wait...")
+                                    Toastify.success("Data retriving success")
                                 } else {
                                     Toastify.error(actiongetperonal.error.message);
                                     console.error('Operation failed:', actiongetperonal.error.message);
                                 }
                             }catch(err){
-                                console.log("It is hit");
                             }
                             }} className="bg-primary text-mode px-4 py-2 rounded-md outline-none">Use Credits / Matched</button>
                     </div>

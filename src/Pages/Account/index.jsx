@@ -5,7 +5,7 @@ import { useSelector,useDispatch } from "react-redux";
 import { valueupdate,setProfilePic } from "../../Redux/PicturesSlice";
 import { Tooltip } from 'react-tooltip'
 import { postMyPictures,updateProfilePic } from "../../Redux/PicturesSlice";
-import { getMyProfile, getPersonalInformationByMemberId, updateMyProfile } from "../../Redux/MemberSlice";
+import { getMyProfile, getMyPersonalDetails, updateMyProfile } from "../../Redux/MemberSlice";
 import { updatePersonalData } from "../../Redux/MemberSlice";
 import Loader from "../../Components/Loader";
 import Navbar from "../../Components/Navbar";
@@ -16,7 +16,7 @@ import Toastify from "../../utils/Toastify";
 
 
 const Account= () =>{
-    
+
     //Selectors
     const uploadPictures = useSelector((state)=>state.Picture.UploadPictures)
     const ProfileAccount = useSelector((state)=>state.Members.Accountpagedata)
@@ -30,7 +30,7 @@ const Account= () =>{
         const dispatchFunctions = async () =>{
             try{
                 dispatch(getMyProfile());
-                dispatch(getPersonalInformationByMemberId(JSON.parse(localStorage.getItem('user')).memberId))
+                dispatch(getMyPersonalDetails())
                 window.scrollTo(0, 0);
             }
             catch(err){

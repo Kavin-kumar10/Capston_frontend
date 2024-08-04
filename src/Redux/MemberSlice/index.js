@@ -128,6 +128,7 @@ const MemberSlice = createSlice({
         mypersonaldetail:{},
         Selected:{},
         loading:false,
+        personalLoading:false,
         Search:{
             SearchPop:false,
             filtered:[]
@@ -189,7 +190,6 @@ const MemberSlice = createSlice({
     },
     extraReducers: (builder) => {
 
-
         builder.addCase(getMembers.fulfilled, (state, action) => {
           state.allMembers = action.payload.filter((elem)=>elem.role === 0 && elem.isVerified === true);
           state.Search.filtered = action.payload.filter((elem)=>elem.role === 0 && elem.isVerified === true);
@@ -237,21 +237,21 @@ const MemberSlice = createSlice({
             state.Profile = {...state.Profile,PersonalDetails:action.payload};
             state.mypersonaldetail = action.payload;
             state.AccountPersonal = action.payload;
-            state.loading = false;
+            state.personalLoading = false;
         })
         .addCase(getMyPersonalDetails.pending,(state,action)=>{
-          state.loading = true;
+          state.personalLoading = true;
         })
         .addCase(getMyPersonalDetails.rejected,(state,action)=>{
           console.error("Error fetching information");
-          state.loading = false;  
+          state.personalLoading = false;  
         })
 
 
         builder
           .addCase(getPersonalInformationByMemberId.fulfilled,(state,action)=>{
               state.Selected = {...state.Selected,PersonalDetail:action.payload}   
-              state.loading = false;  
+              state.loading = false;
             }
           )
           .addCase(getPersonalInformationByMemberId.pending,(state,action)=>{

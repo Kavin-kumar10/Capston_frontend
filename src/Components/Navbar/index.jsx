@@ -60,11 +60,11 @@ const Navbar = () =>{
                 // Mobile view
                 open?
                 <ul className="absolute flex flex-col gap-2 top-16 right-5 w-60 z-20 bg-mode p-2 rounded-md  md:hidden">
-                    <Link className="rounded-md opacity-65 hover:opacity-100 cursor-pointer bg-tertiary text-offmode hover:bg-primary px-3 py-2" to='/'>Home</Link>
-                    <Link className="rounded-md opacity-65 hover:opacity-100 cursor-pointer bg-tertiary text-offmode hover:bg-primary px-3 py-2" to='/Search'>Search</Link>
-                    <Link className="rounded-md opacity-65 hover:opacity-100 cursor-pointer bg-tertiary text-offmode hover:bg-primary px-3 py-2" to='/Matches'>Matches</Link>
-                    <Link className="rounded-md opacity-65 hover:opacity-100 cursor-pointer bg-tertiary text-offmode hover:bg-primary px-3 py-2" to='/Like'>Liked</Link>
-                    <Link  className=" rounded-md opacity-65 hover:opacity-100 cursor-pointer bg-tertiary text-offmode hover:bg-primary px-3 py-2" to='/Account'>Settings</Link>
+                    <Link className="rounded-md opacity-65 hover:opacity-100 cursor-pointer bg-tertiary text-offmode hover:text-tertiary hover:bg-primary px-3 py-2" to='/'>Home</Link>
+                    <Link className="rounded-md opacity-65 hover:opacity-100 cursor-pointer bg-tertiary text-offmode hover:text-tertiary hover:bg-primary px-3 py-2" to='/Search'>Search</Link>
+                    <Link className="rounded-md opacity-65 hover:opacity-100 cursor-pointer bg-tertiary text-offmode hover:text-tertiary hover:bg-primary px-3 py-2" to='/Matches'>Matches</Link>
+                    <Link className="rounded-md opacity-65 hover:opacity-100 cursor-pointer bg-tertiary text-offmode hover:text-tertiary hover:bg-primary px-3 py-2" to='/Like'>Liked</Link>
+                    <Link  className=" rounded-md opacity-65 hover:opacity-100 cursor-pointer bg-tertiary text-offmode hover:text-tertiary hover:bg-primary px-3 py-2" to='/Account'>Settings</Link>
                     {
                         myprofile.membership === 1 && myprofile.dailyLog
                         ?<div className="px-3 py-2 text-primary border-2 border-primary rounded-md flex items-center justify-center gap-5 sm:font-bold">

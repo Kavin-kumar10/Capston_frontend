@@ -25,8 +25,10 @@ const Activate = () =>{
                 <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-offmode via-primary to-primary bg-clip-text text-transparent">Soul Finder</h1>
                 <ul className="text-offmode items-center gap-3 sm:gap-4 md:gap-5 lg:gap-6 justify-between text-xl font-semibold hidden md:flex">
                     <Link className="opacity-65 hover:opacity-100 cursor-pointer" to='/Admin/Activate'>Activate</Link>
-                    <Link className="opacity-65 hover:opacity-100 cursor-pointer" to='/Admin/Report'>Report</Link>
-                </ul>
+                    <div onClick={()=>{
+                        localStorage.removeItem('user');
+                        window.location.reload();
+                    }} className="cursor-pointer px-3 py-2 text-white bg-primary rounded-md flex items-center justify-center gap-5 font-bold">Sign Out</div>                </ul>
             </div>
             <div className="flex flex-col gap-2">
                 <h1 className="text-primary text-xl sm:text-3xl font-bold">Activate Update</h1>
