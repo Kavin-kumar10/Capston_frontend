@@ -166,12 +166,17 @@ const Profile = () =>{
                                     <div className="flex items-center justify-center text-tertiary bg-gray-500 px-2 py-1 rounded-md">Pending</div>
                                     :(requeststatus === "Matched")?<div className="text-tertiary flex items-center justify-center bg-green-700 px-2 py-1 rounded-md">Matched</div>:<></>
                                 }
-                                <button onClick={()=>{
-                                    dispatch(postLikesByMemberId(selected.memberId))
-                                    Toastify.success("Added to Wishlist");
-                                    setTimeout(()=>{
-                                        navigate('/Like')
-                                    },1000)
+                                <button onClick={ async ()=>{
+                                    const resultAction = await dispatch(postLikesByMemberId(selected.memberId))
+                                    if(postLikesByMemberId.fulfilled.match(resultAction)){
+                                        Toastify.success("Added to Wishlist");
+                                        setTimeout(()=>{
+                                            navigate('/Like')
+                                        },1000)
+                                    }
+                                    else{
+                                        Toastify.warn(resultAction.error.message);
+                                    }                                    
                                     }} className="border-2 border-primary text-primary px-2 py-1 rounded-md flex gap-2 items-center justify-center"><FaHeart size={20}/> Hit</button>
                             </div>
                         </div>

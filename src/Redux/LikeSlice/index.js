@@ -29,8 +29,8 @@ export const postLikesByMemberId = createAsyncThunk('post/postLikesByMemberId',a
         // dispatch(getLikesByMemberId())
         return response.data;
       } catch (error) {
-        console.error('Error fetching personal information:', error);
-        throw error;
+        console.error('Error fetching personal information:', error?.response?.data?.message);
+        throw error?.response?.data?.message;
       }
 })
 
