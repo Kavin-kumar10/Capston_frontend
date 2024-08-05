@@ -4,17 +4,22 @@ import { useSelector } from "react-redux";
 import Navbar from "../../Components/Navbar";
 import Card from "../../Components/Card";
 import Loader from "../../Components/Loader";
+import { useDispatch } from "react-redux";
+import { getMembers, getMyPersonalDetails, getMyProfile } from "../../Redux/MemberSlice";
 // import { Link } from "react-router-dom";
 // import Loader from "../../Components/Loader";
 
 const Home = () =>{
     const Members = useSelector((state)=>state.Members.allMembers);
     const loading = useSelector(state => state.Members.loading)
+    const dispatch = useDispatch();
 
     useEffect(()=>{
+        dispatch(getMembers());
+        dispatch(getMyProfile())
+        dispatch(getMyPersonalDetails());
         window.scrollTo(0, 0);
-    },[])
-    // console.log(Members);
+    },[dispatch])
 
     return(
         loading?<Loader/>:

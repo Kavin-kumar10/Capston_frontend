@@ -1,14 +1,13 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios'
 
-const baseurl = "https://matrimonykavinapi.azurewebsites.net/api/"
-const memberId = Number(JSON.parse(localStorage.getItem('user'))?.memberId);
-const token = JSON.parse(localStorage.getItem('user'))?.token;
+const baseurl = "https://matrimonykavinapi.azurewebsites.net/api"
 
 //Get Matches with memberId
 
 export const getMatchesWithMemberId = createAsyncThunk('gets/getMatchesWithMemberId',async () =>{
     try {
+        const token = JSON.parse(localStorage.getItem('user'))?.token;
         const response = await axios.get(`${baseurl}/Matches`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -25,6 +24,7 @@ export const getMatchesWithMemberId = createAsyncThunk('gets/getMatchesWithMembe
 
 export const postNewMatch = createAsyncThunk('posts/postNewMatch',async (matchRequestDto) =>{
   try {
+      const token = JSON.parse(localStorage.getItem('user'))?.token;
       const response = await axios.post(`${baseurl}/Matches`, matchRequestDto ,{
         headers: {
           Authorization: `Bearer ${token}`,
@@ -39,6 +39,7 @@ export const postNewMatch = createAsyncThunk('posts/postNewMatch',async (matchRe
 
 export const updateExistingMatch = createAsyncThunk('update/updateExistingMatch',async (data) =>{
   try {
+      const token = JSON.parse(localStorage.getItem('user'))?.token;
       var {decision,match} = data;
       const updatedMatch = {
         ...match,
@@ -81,8 +82,8 @@ const MatchSlice = createSlice({
     reducers:{
       setRequestStatus:(state,action)=>{
 
-        let {allmatches,selected} = action.payload
-        const foundMatch = allmatches.find(match => (
+        let {selected} = action.payload
+        const foundMatch = state.MyAllMatches.all.find(match => (
           match.fromProfileId === selected.memberId ||
           match.toProfileId === selected.memberId
         ));        
@@ -102,12 +103,14 @@ const MatchSlice = createSlice({
       setMatch:(state,action)=>{state.UpdateMatchRequest.match = action.payload}
     },
     extraReducers: (builder) => {
-        // Add reducers for additional action types here, and handle loading state as needed
-        builder
-        .addCase(getMatchesWithMemberId.pending, (state) => {
-            state.loading = true;
-        })
-        .addCase(getMatchesWithMemberId.fulfilled, (state, action) => {
+      
+      // Add reducers for additional action types here, and handle loading state as needed
+      builder
+      .addCase(getMatchesWithMemberId.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMatchesWithMemberId.fulfilled, (state, action) => {
+        const memberId = Number(JSON.parse(localStorage.getItem('user'))?.memberId);
         state.loading = false;
         state.MyAllMatches = {
               all : action.payload,

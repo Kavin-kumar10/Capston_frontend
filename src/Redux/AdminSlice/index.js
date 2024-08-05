@@ -3,7 +3,7 @@ import axios from 'axios'
 
 
 const token = JSON.parse(localStorage.getItem('user'))?.token;
-const baseurl = "https://matrimonykavinapi.azurewebsites.net/api/"
+const baseurl = "https://matrimonykavinapi.azurewebsites.net/api"
 
 
 export const GetAllMembers = createAsyncThunk('gets/getsAllMembers',async () =>{

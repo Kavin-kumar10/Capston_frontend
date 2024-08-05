@@ -13,7 +13,7 @@ import Map from "../../Components/Map";
 import Loader from "../../Components/Loader";
 
 //Reducers
-import { setPopClose,setPopOpen } from "../../Redux/MatchSlice";
+import { getMatchesWithMemberId, setPopClose,setPopOpen } from "../../Redux/MatchSlice";
 import { setPostMessage,setPostToProfileId } from "../../Redux/MatchSlice";
 import { setRequestStatus } from "../../Redux/MatchSlice";
 
@@ -41,7 +41,7 @@ const Profile = () =>{
     
     //Match slices
     const pop = useSelector(state => state.Match.pop)
-    const allmatches = useSelector(state => state.Match.MyAllMatches.all)
+    // const allmatches = useSelector(state => state.Match.MyAllMatches.all)
     const postmatch = useSelector(state=>state.Match.PostMatchRequest)
     const requeststatus = useSelector(state => state.Match.selectedmatchstatus);
     const loading = useSelector(state => state.Members.loading);
@@ -50,8 +50,9 @@ const Profile = () =>{
     //Get Request for Selected 
     let value = useParams();
     useEffect(()=>{
-        dispatch(setRequestStatus({allmatches,selected}))
-    },[selected,dispatch,allmatches])
+        dispatch(getMatchesWithMemberId())
+        dispatch(setRequestStatus({selected}))
+    },[selected,dispatch])
     useEffect(()=>{
         const asyncfunction  = async()=>{
             try{
@@ -94,7 +95,7 @@ const Profile = () =>{
             {
                 pop?
                 <div id="MatchRequestPop" className="rounded-md h-screen z-20 w-screen fixed bg-mode bg-opacity-50 top-0 left-0 flex items-center justify-center">
-                    <div className="bg-mode p-5 w-full m-1 md:w-1/2 lg:w-1/3 rounded-sm shadow-sm shadow-secondary">
+                    <div className="bg-mode p-5  w-full m-5 md:w-1/2 lg:w-1/3 rounded-sm shadow-sm shadow-secondary">
                         <h1 className="text-primary text-xl md:text-2xl font-semibold my-3">Match Request</h1>
                         <p className="mb-3 text-lg text-secondary opacity-60">Match request to {selected.personName}</p>
                         <input onChange={(e)=>dispatch(setPostMessage(e.target.value))} id="message" name="message" className="rounded-md w-full px-2 md:px-5 py-1 md:py-2 outline-none border border-secondary" type="text" placeholder="Hey Let's get matched ...."/>

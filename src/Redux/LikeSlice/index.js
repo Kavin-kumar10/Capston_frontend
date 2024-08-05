@@ -1,11 +1,11 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios'
 
-const baseurl = "https://matrimonykavinapi.azurewebsites.net/api/"
-const token = JSON.parse(localStorage.getItem('user'))?.token;
+const baseurl = "https://matrimonykavinapi.azurewebsites.net/api"
 
 export const getLikesByMemberId = createAsyncThunk('gets/getLikesByMemberId',async () =>{
     try {
+        const token = JSON.parse(localStorage.getItem('user'))?.token;
         const response = await axios.get(`${baseurl}/Like/GetByMemberId`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -20,6 +20,7 @@ export const getLikesByMemberId = createAsyncThunk('gets/getLikesByMemberId',asy
 
 export const postLikesByMemberId = createAsyncThunk('post/postLikesByMemberId',async (likedid) =>{
     try {
+        const token = JSON.parse(localStorage.getItem('user'))?.token;
         const response = await axios.post(`${baseurl}/Like?LikeMemberId=${likedid}`,{},{
           headers: {
             "Authorization": `Bearer ${token}`,
@@ -36,6 +37,7 @@ export const postLikesByMemberId = createAsyncThunk('post/postLikesByMemberId',a
 
 export const deleteLikeByLikeId = createAsyncThunk('delete/deleteLikeByLikeId',async (likeId) =>{
   try {
+      const token = JSON.parse(localStorage.getItem('user'))?.token;
       const response = await axios.delete(`${baseurl}/Like?LikeId=${likeId}`,{},{
         headers: {
           "Authorization": `Bearer ${token}`,

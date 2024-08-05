@@ -3,6 +3,7 @@ import { useSelector,useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
 import { getMatchesWithMemberId, updateExistingMatch } from "../../Redux/MatchSlice";
+import { getMyProfile } from "../../Redux/MemberSlice";
 import Loader from "../../Components/Loader";
 // import { setDecision,setMatch } from "../../Redux/MatchSlice";
 
@@ -12,6 +13,7 @@ const Matches = () =>{
     const loading = useSelector(state=> state.Match.loading)
     const dispatch = useDispatch();
     useEffect(()=>{
+        dispatch(getMyProfile());
         dispatch(getMatchesWithMemberId())
     },[dispatch])
     const [required,setRequired] = useState()
@@ -32,7 +34,7 @@ const Matches = () =>{
                         <div className="grid gap-5 md:grid-cols-3 lg:grid-cols-2">
                         {
                             required?.map((elem)=>
-                                <div key={elem} className="bg-mode flex flex-col lg:flex-row shadow-md h-full w-full p-5 gap-5 hover:shadow-lg cursor-pointer">
+                                <div key={elem.fromProfile.memberId} className="bg-mode flex flex-col lg:flex-row shadow-md h-full w-full p-5 gap-5 hover:shadow-lg cursor-pointer">
                                     <div className="flex flex-col w-full lg:w-1/2">
                                         <div className="relative">
                                             <img src={elem.fromProfile.profilePic} alt="" />
@@ -83,7 +85,7 @@ const Matches = () =>{
                         <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                         {
                         required?.map((elem)=>
-                            <Link key={elem} to={`/Profile/${elem.toProfile.memberId}`} className="bg-mode flex flex-col shadow-md aspect-square w-full p-5 gap-5 hover:shadow-lg cursor-pointer">
+                            <Link key={elem.toProfile.memberId} to={`/Profile/${elem.toProfile.memberId}`} className="bg-mode flex flex-col shadow-md aspect-square w-full p-5 gap-5 hover:shadow-lg cursor-pointer">
                                 <div className="relative">
                                     <img src={elem.toProfile.profilePic} alt="" />
                                     <div className="absolute top-1 right-2 ">
@@ -106,7 +108,7 @@ const Matches = () =>{
                                 const profileToDisplay = isFromProfile ? elem.toProfile : elem.fromProfile;
                         
                             return(
-                            <Link key={elem} to={`/Profile/${profileToDisplay.memberId}`} className="bg-mode flex flex-col shadow-md aspect-square w-full p-5 gap-5 hover:shadow-lg cursor-pointer">
+                            <Link key={profileToDisplay.memberId} to={`/Profile/${profileToDisplay.memberId}`} className="bg-mode flex flex-col shadow-md aspect-square w-full p-5 gap-5 hover:shadow-lg cursor-pointer">
                                 <div className="relative">
                                     <img src={profileToDisplay.profilePic} alt="" />
                                     <div className="absolute top-1 right-2 ">

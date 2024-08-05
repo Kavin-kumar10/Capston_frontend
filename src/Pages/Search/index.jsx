@@ -3,7 +3,7 @@ import Navbar from "../../Components/Navbar";
 import Card from "../../Components/Card"
 import { useSelector,useDispatch } from "react-redux";
 import { MdFilterAlt  } from "react-icons/md";
-import { handlePop,SearchBarFilter } from "../../Redux/MemberSlice";
+import { getMembers, handlePop,SearchBarFilter } from "../../Redux/MemberSlice";
 import { setChangesToFiltered } from "../../Redux/MemberSlice";
 import { setFilteredToAll } from "../../Redux/MemberSlice";
 import Loader from "../../Components/Loader";
@@ -21,8 +21,9 @@ const Search = () =>{
     const loading = useSelector(state => state.Members.loading)
     const dispatch = useDispatch();
     useEffect(()=>{
+        dispatch(getMembers());
         window.scrollTo(0, 0);
-    },[])
+    },[dispatch])
     const handleFilterChange = (e) =>{
         setFilteres({...filters,[e.target.name]:e.target.value})
     }
@@ -39,7 +40,7 @@ const Search = () =>{
                 <p className="text-lg sm:text-xl font-semibold opacity-50">Find your perfect partner</p>
             </div>
             <div className="bar flex gap-2 relative z-10">
-                <input onChange={(e)=>dispatch(SearchBarFilter(e.target.value))} type="text" id="search" className="block p-2 w-fit outline-none text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" placeholder="Search"/>
+                <input onChange={(e)=>dispatch(SearchBarFilter(e.target.value))} type="text" id="search" className="p-2 w-fit outline-none text-sm text-offmode border border-gray-300 rounded-lg bg-gray-50" placeholder="Search"/>
                 <div onClick={()=>dispatch(handlePop('open'))} className="p-2 rounded-md border border-primary text-primary cursor-pointer w-fit"><MdFilterAlt size={20}/></div>
                 {
                     SearchPop?

@@ -2,7 +2,7 @@ import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios'
 
 
-const baseurl = "https://matrimonykavinapi.azurewebsites.net/api/"
+const baseurl = "https://matrimonykavinapi.azurewebsites.net/api"
 // const baseurl = "https://localhost:7073/api"
 
 //Validator

@@ -67,10 +67,7 @@ const Activate = () =>{
                             <div className="flex justify-between items-center">
                                 <button onClick={()=>{dispatch(setSelected(elem))}} className="bg-primary px-2 py-1 text-tertiary rounded-md border border-primary outline-none">Activate</button>
                                 <button onClick={()=>{
-                                    dispatch(DeactivateMember(elem.memberId));
-                                    setTimeout(()=>{
-                                        window.location.reload();
-                                    },1000)
+                                        dispatch(DeactivateMember(elem.memberId));
                                     }} className="bg-mode px-2 py-1 text-primary border border-dotted border-primary rounded-md outline-none">Deactivate</button>
                             </div>
                         </div>

@@ -1,9 +1,8 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios'
 
-const token = JSON.parse(localStorage.getItem('user'))?.token;
 // console.log(token);
-const baseurl = "https://matrimonykavinapi.azurewebsites.net/api/"
+const baseurl = "https://matrimonykavinapi.azurewebsites.net/api"
 
 // Get all members
 
@@ -17,7 +16,12 @@ export const getMembers = createAsyncThunk('gets/getMembers',async () =>{
 // Get member details by id
 
 export const getMemberById = createAsyncThunk('gets/getMemberById',async (id) =>{
-    return axios.get(`${baseurl}/Member/GetByMemberId/?memberId=${id}`).then((res)=>{
+    const token = JSON.parse(localStorage.getItem('user'))?.token;
+    return axios.get(`${baseurl}/Member/GetByMemberId/?memberId=${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res)=>{
         return res.data;
     })
 })
@@ -26,6 +30,7 @@ export const getMemberById = createAsyncThunk('gets/getMemberById',async (id) =>
 
 export const getMyProfile = createAsyncThunk('gets/getMyProfile',async () =>{
     try {
+        const token = JSON.parse(localStorage.getItem('user'))?.token;
         const response = await axios.get(`${baseurl}/Member/Profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -40,6 +45,7 @@ export const getMyProfile = createAsyncThunk('gets/getMyProfile',async () =>{
 
 export const updateMyProfile = createAsyncThunk('put/putMyProfile',async (newProfile) =>{
   try {
+      const token = JSON.parse(localStorage.getItem('user'))?.token;
       const response = await axios.put(`${baseurl}/Member`, newProfile,{
         headers: {
           Authorization: `Bearer ${token}`,
@@ -60,6 +66,7 @@ export const updateMyProfile = createAsyncThunk('put/putMyProfile',async (newPro
 
 export const getMyPersonalDetails = createAsyncThunk('gets/getMyPersonalDetails',async () =>{
     try {
+        const token = JSON.parse(localStorage.getItem('user'))?.token;
         const response = await axios.get(`${baseurl}/PersonalDetails/GetPersonalDetailByToken`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -74,6 +81,7 @@ export const getMyPersonalDetails = createAsyncThunk('gets/getMyPersonalDetails'
 
 export const updatePersonalData = createAsyncThunk('put/putMyPersonalData',async (newPersonalData) =>{
   try {
+      const token = JSON.parse(localStorage.getItem('user'))?.token;
       const response = await axios.put(`${baseurl}/PersonalDetails`, newPersonalData,{
         headers: {
           Authorization: `Bearer ${token}`,
@@ -90,6 +98,7 @@ export const updatePersonalData = createAsyncThunk('put/putMyPersonalData',async
 
 export const postLocate = createAsyncThunk('post/postLocate',async (postdata) =>{
   try {
+      const token = JSON.parse(localStorage.getItem('user'))?.token;
       const response = await axios.post(`${baseurl}/Locate`, postdata ,{
         headers: {
           Authorization: `Bearer ${token}`,
@@ -106,6 +115,7 @@ export const postLocate = createAsyncThunk('post/postLocate',async (postdata) =>
 
 export const getPersonalInformationByMemberId = createAsyncThunk('gets/getsPersonalInformation',async (id) =>{
     try {
+        const token = JSON.parse(localStorage.getItem('user'))?.token;
         const response = await axios.get(`${baseurl}/PersonalDetails/GetByMemberId?MemberId=${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
