@@ -21,16 +21,16 @@ const Navbar = () =>{
             {
                 premium?
                 <div id="PremiumPOP" className="rounded-md h-screen z-20 w-screen fixed bg-white bg-opacity-50 top-0 left-0 flex items-center justify-center">
-                    <div className="relative bg-gradient-to-r from-offmode via-primary to-primary flex flex-col gap-5 items-center justify-center text-center p-5 h-1/2 sm:h-2/3 m-1 w-4/5 sm:w-1/2 lg:w-3/5 rounded-md shadow-sm shadow-secondary">
+                    <div className="relative bg-gradient-to-r from-offmode via-primary to-primary flex flex-col gap-5 items-center justify-center text-center p-5 h-2/3 sm:h-2/3 m-1 w-4/5 sm:w-1/2 lg:w-3/5 rounded-md shadow-sm shadow-secondary">
                     <div onClick={()=>setPremium(false)} className="absolute top-5 right-5">
                         <IoMdClose className="cursor-pointer" size={30}/>
                     </div>
-                        <h1 className="text-tertiary font-extrabold text-3xl tracking-wider w-full md:text-5xl md:w-4/5 ">Get Your Premium Subscription Now</h1>
-                        <div className="flex flex-col gap-3">
-                            <p className="text-tertiary opacity-70 font-bold">Get notified by people 120% more than Usual</p>
-                            <p className="text-tertiary opacity-70 font-bold ">Get upto 5 Personal Details Credentials per day</p>
+                        <h1 className="text-tertiary font-extrabold tracking-wider w-full text-xl sm:text-3xl md:text-5xl md:w-4/5 ">Get Your Premium Subscription Now</h1>
+                        <div className="flex flex-col gap-1 md:gap-3">
+                            <p className="text-tertiary text-sm md:text-lg opacity-70 font-bold">Get noticed by people 120% more than Usual</p>
+                            <p className="text-tertiary text-sm md:text-lg opacity-70 font-bold ">Get upto 5 Personal Details Credentials per day</p>
                         </div>
-                        <button className="bg-tertiary text-offmode text-lg hover:bg-offmode hover:text-tertiary hover:duration-100 px-5 py-2 rounded-md font-bold">Subscribe</button>
+                        <button className="bg-tertiary text-offmode text-sm md:text-lg hover:bg-offmode hover:text-tertiary hover:duration-100 px-3 py-1 sm:px-5 sm:py-2 rounded-md font-bold">Subscribe</button>
                     </div>
                 </div>:<></>
             }
